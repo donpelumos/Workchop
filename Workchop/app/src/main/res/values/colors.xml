@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="WorkchopBlue">#0075d8</color>
+    <color name="workchopGrey">#656565</color>
+    <color name="WorkchopGold">#FFDF00</color>
+    <color name="workchop_blue">#0075d8</color>
+    <color name="quadrantOne">#00D8BF</color>
+    <color name="quadrantTwo">#353BAF</color>
+    <color name="quadrantThree">#B16B0A</color>
+    <color name="quadrantFour">#FC087E</color>
+    <color name="quadrantFive">#840F84</color>
+    <color name="quadrantSix">#D8000E</color>
+    <color name="quadrantSeven">#059F15</color>
+    <color name="quadrantEight">#CDD800</color>
+</resources>

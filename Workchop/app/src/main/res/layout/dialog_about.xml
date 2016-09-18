@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:src="@drawable/icon"
+            android:padding="2dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workchop"
+                android:id="@+id/appName"
+                android:textSize="24sp"
+                android:textColor="@color/workchopBlue" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/versionName"
+                android:text="Version 1.0"
+                android:textSize="14sp"
+                android:textColor="#005399"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/termsAndConditions"
+                android:text="Terms and Conditions"
+                android:textSize="13sp"
+                android:textColor="#005399"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/copoyrightStatement"
+                android:text="&#169; 2016 Deftbase Limited"
+                android:textSize="12sp"
+                android:textColor="#005399"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

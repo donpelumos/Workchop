@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Workchop</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <color name="workchopBlue">#0075D8</color>
+    <color name="workchopGold">#FFDF00</color>
+    <string name="app_id">1377143922498067</string>
+</resources>

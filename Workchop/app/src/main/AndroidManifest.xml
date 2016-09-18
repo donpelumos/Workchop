@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.workchopapp.workchop"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="22" />
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/workchopphoneicon"
+        android:label="@string/app_name"
+
+        android:theme="@style/WorkChopTheme" >
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1377143922498067"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"  android:value="@string/app_id" />
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.workchopapp.workchop.ActivityAgreement"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityTerms"
+            android:screenOrientation="portrait"
+            android:label="Terms and Conditions"
+            android:parentActivityName="com.workchopapp.workchop.ActivityAgreement" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityAgreement" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityLogin"
+            android:screenOrientation="portrait"
+            android:label="Login"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityMain"
+            android:label="Main"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityMyVendors"
+            android:label="My Vendors"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMain" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityMySelectedVendor"
+            android:label="My Selected Vendor"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMyVendors"
+            android:windowSoftInputMode="adjustPan" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMyVendors" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityAccount"
+            android:label="Account"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityFeedback"
+            android:label="Feedback"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityReportIssue"
+            android:label="Report An Issue"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityChats"
+            android:label="Chats"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityChangePassword"
+            android:label="Change Password"
+            android:parentActivityName="com.workchopapp.workchop.ActivityMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityTermsLoginPage"
+            android:label="Terms and Conditions"
+            android:parentActivityName="com.workchopapp.workchop.ActivityLogin" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityLogin" />
+        </activity>
+        <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
+        <activity
+            android:name="com.workchopapp.workchop.ActivityVendorMain"
+            android:label="Vendor Home"
+            android:parentActivityName="com.workchopapp.workchop.ActivityLogin" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityLogin" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityAccountVendor"
+            android:label="Account"
+            android:parentActivityName="com.workchopapp.workchop.ActivityVendorMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityVendorMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityChangePasswordVendor"
+            android:label="Change Password"
+            android:parentActivityName="com.workchopapp.workchop.ActivityVendorMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityVendorMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityFeedbackVendor"
+            android:label="Feedback"
+            android:parentActivityName="com.workchopapp.workchop.ActivityVendorMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityVendorMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityReportIssueVendor"
+            android:label="Report An Issue"
+            android:parentActivityName="com.workchopapp.workchop.ActivityVendorMain"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityVendorMain" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityForgotPassword"
+            android:label="Forgot Password"
+            android:parentActivityName="com.workchopapp.workchop.ActivityLogin"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityLogin" />
+        </activity>
+    </application>
+
+</manifest>
