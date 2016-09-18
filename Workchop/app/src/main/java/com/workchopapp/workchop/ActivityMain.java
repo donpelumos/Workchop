@@ -1295,7 +1295,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     public void run() {
                         if(sb.toString().equals("false")){
                             try {
-                                progress.dismiss();
+                                //progress.dismiss();
                             }
                             catch(NullPointerException e){
 
@@ -1521,7 +1521,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     contactName = contactName + " " + value[j];
                 }
             }
-            new contactsUploader(ActivityMain.this).execute(userId,contactName,contactNumber);
+            new contactsUploader(ActivityMain.this).execute(userId,contactName,contactNumber, String.valueOf(i));
         }
         new getVendorTypes(ActivityMain.this).execute("");
 
@@ -1567,12 +1567,12 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 workchopVendorList5.add(contactName + " " + String.valueOf(contactType));
             }
             new vendorsUploader(ActivityMain.this).execute(userId,contactName,contactNumber,String.valueOf(contactType),"0",
-                    String.valueOf(workchopUserLocationIndex));
+                    String.valueOf(workchopUserLocationIndex), String.valueOf(i));
         }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                progress.dismiss();
+                //progress.dismiss();
                 ////Toast.makeText(ActivityMain.this,"User location - "+workchopUserLocationIndex,Toast.LENGTH_SHORT).show();
             }
         },2000);
@@ -1781,9 +1781,26 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(final String... params) {
             String dataUrl = "http://workchopapp.com/mobile_app/upload_user_contacts.php";
 
+
+            if(Integer.parseInt(params[3])+1 == finalContactsList.size()){
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    public void run() {
+                        progress.dismiss();
+                    }
+                });
+
+            }
+            else{
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    public void run() {
+                        int curr = Integer.parseInt(params[3]) + 1;
+                        progress.setTitle("Uploading User Contacts - "+ curr +" of "+finalContactsList.size());
+                    }
+                });
+            }
             String dataUrlParameters = null;
             try {
                 dataUrlParameters = "user_id="+ URLEncoder.encode(params[0],"UTF-8")
@@ -2112,6 +2129,13 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         protected String doInBackground( final String... params) {
             String dataUrl = "http://workchopapp.com/mobile_app/upload_user_vendors.php";
             String dataUrl2 = "http://workchopapp.com/mobile_app/update_user_location.php";
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                public void run() {
+                    int curr = Integer.parseInt(params[6])+1;
+                    progress.setTitle("Populating Vendor List - " + curr +" of "+foundVendors.size());
+                }
+            });
             String dataUrlParameters = null;
             String dataUrlParameters2 = null;
             try {
@@ -2686,7 +2710,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     }
 
     public void uploadUserCotacts2 (){
-        uploadUserVendors2();
+        //uploadUserVendors2();
         for(int i=0; i < finalContactsList2.size(); i++){
             String [] value = finalContactsList2.get(i).split(" ");
             //Log.v("CONTACT ID "+i, finalContactsList.get(i));
@@ -2701,8 +2725,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 }
             }
             new contactsUploader2(ActivityMain.this).execute(userId,contactName,contactNumber,
-                    String.valueOf(finalContactsList2.size() - i));
+                    String.valueOf(finalContactsList2.size() - i),String.valueOf(i));
         }
+        uploadUserVendors2();
 
         //Toast.makeText(ActivityMain.this,"USER CONTACTS FULLY UPLOADED", Toast.LENGTH_LONG).show();
     }
@@ -2740,7 +2765,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 contactType = 5;
             }
             new vendorsUploader2(ActivityMain.this).execute(userId,contactName,contactNumber,String.valueOf(contactType),"0",
-                    String.valueOf(workchopUserLocationIndex));
+                    String.valueOf(workchopUserLocationIndex), String.valueOf(i));
         }
     }
 
@@ -2764,6 +2789,12 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             catch (UnsupportedEncodingException e) {
                 //Toast.makeText(ActivityMain.this,new String("Exception: "+ e.getCause()+ "\n"+ e.getMessage()), Toast.LENGTH_LONG).show();
             }
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                public void run() {
+                    int curr = Integer.parseInt(params[4]) + 1;
+                    backupProgress.setTitle("Backing up contacts - "+ curr +" of "+finalContactsList2.size());
+                }
+            });
             URL url = null;
             HttpURLConnection connection = null;
             Log.v("REFRESH CONTACTS UPLOAD",dataUrl+"?"+dataUrlParameters);
@@ -2790,7 +2821,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                             ////Toast.makeText(context, "TEMPORARY SIGN UP", Toast.LENGTH_LONG).show();
                         }
                         if(Integer.parseInt(params[3]) < 2){
-                            backupProgress.dismiss();
+                            //backupProgress.dismiss();
                             //Toast.makeText(context, "BACK-UP COMPLETE", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -2846,6 +2877,17 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             String dataUrl2 = "http://workchopapp.com/mobile_app/update_user_location.php";
             String dataUrlParameters = null;
             String dataUrlParameters2 = null;
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                public void run() {
+                    if(Integer.parseInt(params[6])+1 == foundVendors2.size()) {
+                        backupProgress.dismiss();
+                    }
+                    else{
+                        int curr = Integer.parseInt(params[6]) + 1;
+                        backupProgress.setTitle("Backing up vendors - " + curr + " of " + foundVendors2.size());
+                    }
+                }
+            });
             try {
                 dataUrlParameters = "user_id="+ URLEncoder.encode(params[0],"UTF-8")
                         +"&vendor_name="+URLEncoder.encode(params[1],"UTF-8")
