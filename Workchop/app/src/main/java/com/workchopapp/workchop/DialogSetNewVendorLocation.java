@@ -92,64 +92,113 @@ public class DialogSetNewVendorLocation extends DialogFragment {
         newQuadrant1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)1.0); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 1;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 1.0);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 1;
+                }
             }
         });
         newQuadrant2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)1.0); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 2;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 1.0);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 2;
+                }
             }
         });
         newQuadrant3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)1.0);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 3;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 1.0);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 3;
+                }
             }
         });
         newQuadrant4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)1.0); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 4;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 1.0);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 4;
+                }
             }
         });
         newQuadrant5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)1.0); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 5;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 1.0);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 5;
+                }
             }
         });
         newQuadrant6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)1.0);
-                newQuadrant7.setAlpha((float)0.7); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 6;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 1.0);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 6;
+                }
             }
         });
         newQuadrant7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)1.0); selectLocationButton.setVisibility(View.VISIBLE);
-                locationChosen = 7;
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 1.0);
+                    selectLocationButton.setVisibility(View.VISIBLE);
+                    locationChosen = 7;
+                }
             }
         });
 
