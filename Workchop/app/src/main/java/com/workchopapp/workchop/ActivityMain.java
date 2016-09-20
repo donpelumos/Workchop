@@ -1709,6 +1709,24 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             case 7:
                 locationString = "<Oshodi--Egbeda>";
                 break;
+            case 21:
+                locationString = "Abaji";
+                break;
+            case 22:
+                locationString = "Abuja Municipal";
+                break;
+            case 23:
+                locationString = "Bwari";
+                break;
+            case 24:
+                locationString = "Gwagwalada";
+                break;
+            case 25:
+                locationString = "Kuje";
+                break;
+            case 26:
+                locationString = "Kwari";
+                break;
         }
         if(rows.size() <5 ) {
             for (int i = 0; i < rows.size(); i++) {

@@ -95,71 +95,120 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)1.0); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); mColorSelected.onSelected(R.color.workchopGrey, 1);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 1.0);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    mColorSelected.onSelected(R.color.workchopGrey, 1);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         newQuadrant2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)1.0); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); mColorSelected.onSelected(R.color.workchopBlue, 2);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 1.0);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    mColorSelected.onSelected(R.color.workchopBlue, 2);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         newQuadrant3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)1.0);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); mColorSelected.onSelected(R.color.workchopBlue, 3);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 1.0);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    mColorSelected.onSelected(R.color.workchopBlue, 3);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         newQuadrant4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)1.0); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); mColorSelected.onSelected(R.color.workchopGrey, 4);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 1.0);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    mColorSelected.onSelected(R.color.workchopGrey, 4);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         newQuadrant5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)1.0); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)0.7); mColorSelected.onSelected(R.color.workchopBlue, 5);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 1.0);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    mColorSelected.onSelected(R.color.workchopBlue, 5);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         newQuadrant6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)1.0);
-                newQuadrant7.setAlpha((float)0.7); mColorSelected.onSelected(R.color.workchopBlue, 6);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 1.0);
+                    newQuadrant7.setAlpha((float) 0.7);
+                    mColorSelected.onSelected(R.color.workchopBlue, 6);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         newQuadrant7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newQuadrant1.setAlpha((float)0.7); newQuadrant2.setAlpha((float)0.7); newQuadrant3.setAlpha((float)0.7);
-                newQuadrant4.setAlpha((float)0.7); newQuadrant5.setAlpha((float)0.7); newQuadrant6.setAlpha((float)0.7);
-                newQuadrant7.setAlpha((float)1.0); mColorSelected.onSelected(R.color.workchopBlue, 7);
-                mColorSelected.done();
-                dialog.cancel();
+                if(locationState == 1) {
+                    newQuadrant1.setAlpha((float) 0.7);
+                    newQuadrant2.setAlpha((float) 0.7);
+                    newQuadrant3.setAlpha((float) 0.7);
+                    newQuadrant4.setAlpha((float) 0.7);
+                    newQuadrant5.setAlpha((float) 0.7);
+                    newQuadrant6.setAlpha((float) 0.7);
+                    newQuadrant7.setAlpha((float) 1.0);
+                    mColorSelected.onSelected(R.color.workchopBlue, 7);
+                    mColorSelected.done();
+                    dialog.cancel();
+                }
             }
         });
         //quadrantSelected = (TextView)view.findViewById(R.id.quadrantSelected);
