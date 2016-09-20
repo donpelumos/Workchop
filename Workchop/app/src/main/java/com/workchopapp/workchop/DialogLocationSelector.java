@@ -38,6 +38,7 @@ public class DialogLocationSelector extends DialogFragment {
     ColorSelected mColorSelected;
     ImageView leftArrow, rightArrow;
     public int selectedHalf;
+    int locationState = 1;
 
     public DialogLocationSelector(){
 

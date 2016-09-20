@@ -33,6 +33,7 @@ public class DialogSetNewVendorLocation extends DialogFragment {
     Button selectLocationButton;
     ImageView leftArrow, rightArrow;
     public int selectedHalf;
+    int locationState = 1;
 
     public DialogSetNewVendorLocation(){
 

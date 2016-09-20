@@ -32,6 +32,7 @@ public class DialogUserSelectLocation extends DialogFragment {
     Button selectLocationButton;
     ImageView leftArrow, rightArrow;
     public int selectedHalf;
+    int locationState = 1;
 
     public DialogUserSelectLocation(){
 
