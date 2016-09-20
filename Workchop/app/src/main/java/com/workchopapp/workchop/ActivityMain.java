@@ -751,7 +751,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         new phoneNoToFile2(ActivityMain.this).execute(userId);
         backupProgress = new ProgressDialog(ActivityMain.this);
         backupProgress.setTitle("Backing up contact and vendor information");
-        backupProgress.setMessage("This may take a few(3-5) minutes");
+        backupProgress.setMessage("This may take a few minutes");
         getContactsCount();
     }
 
