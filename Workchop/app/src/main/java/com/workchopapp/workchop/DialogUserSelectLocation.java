@@ -33,6 +33,12 @@ public class DialogUserSelectLocation extends DialogFragment {
     ImageView leftArrow, rightArrow;
     public int selectedHalf;
     int locationState = 1;
+    TextView stateText;
+    String [] locations1 = {"Ojuelegba | Surulere | Iponri | Festac | Aguda | Bode Thomas | Apapa | Mile 2 | Badagry",
+            "Ikeja | Ogba | Opebi | Oregun | Alausa | Berger","Shomolu | Bariga | Anthony | Maryland | Onipanu | Ilupeju",
+            "Ebute Meta | Yaba | Akoka | Lagos Island | Oke Arin | Sure | Obalende","Ikorodu | Ojota | Mile 12 | Ketu",
+            "Ajah | Lekki | Victoria Island | Ikoyi | Epe","Oshodi | Alimosho | Abule Egba | Ikotun | Egbeda"};
+    String [] locations2 = {"Abaji","Abuja Municipal","Bwari","Gwagwalada","Kuje","Kwali"};
 
     public DialogUserSelectLocation(){
 
@@ -67,6 +73,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         SpannableString content = new SpannableString(udata);
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
         cantFind.setText(content);
+        stateText = (TextView)view.findViewById(R.id.stateId);
         locationChosen = 0;
 
         newQuadrant1 = (TextView)view.findViewById(R.id.newQuadrant1);
@@ -264,6 +271,14 @@ public class DialogUserSelectLocation extends DialogFragment {
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(locationState == 1){
+                    locationState = 2;
+                    stateText.setText("Federal Capital Territory");
+                }
+                else if(locationState == 2){
+                    locationState = 1;
+                    stateText.setText("Lagos State");
+                }
                 Toast.makeText(view.getContext(),"Available only in Lagos. Rolling out to other states soon.",Toast.LENGTH_LONG).show();
             }
         });

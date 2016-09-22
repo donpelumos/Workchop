@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="#444444"
+            android:id="@+id/stateId"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginRight="40dp"

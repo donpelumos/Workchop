@@ -29,6 +29,7 @@
             android:textSize="16sp"
             android:textColor="#444444"
             android:gravity="center"
+            android:id="@+id/stateId"
             android:layout_gravity="center"
             android:layout_marginRight="40dp"
             android:text="Lagos State"/>
