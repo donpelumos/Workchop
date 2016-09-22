@@ -271,13 +271,18 @@ public class DialogUserSelectLocation extends DialogFragment {
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                locationState = locationState-1;
                 if(locationState == 1){
-                    locationState = 2;
                     stateText.setText("Federal Capital Territory");
+                    newQuadrant1.setText(locations2[1]);
+                    newQuadrant2.setText(locations2[2]);
+                    newQuadrant3.setText(locations2[3]);
+                    newQuadrant4.setText(locations2[4]);
+                    newQuadrant5.setText(locations2[5]);
+                    newQuadrant6.setText(locations2[6]);
+                    newQuadrant7.setVisibility(View.GONE);
                 }
-                else if(locationState == 2){
-                    locationState = 1;
-                    stateText.setText("Lagos State");
+                else {
                 }
                 Toast.makeText(view.getContext(),"Available only in Lagos. Rolling out to other states soon.",Toast.LENGTH_LONG).show();
             }
@@ -285,6 +290,18 @@ public class DialogUserSelectLocation extends DialogFragment {
         rightArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                locationState = locationState + 1;
+                if(locationState == 2){
+                    stateText.setText("Lagos State");
+                    newQuadrant1.setText(locations1[1]);
+                    newQuadrant2.setText(locations1[2]);
+                    newQuadrant3.setText(locations1[3]);
+                    newQuadrant4.setText(locations1[4]);
+                    newQuadrant5.setText(locations1[5]);
+                    newQuadrant6.setText(locations1[6]);
+                    newQuadrant7.setText(locations1[7]);
+                    newQuadrant7.setVisibility(View.VISIBLE);
+                }
                 Toast.makeText(view.getContext(),"Available only in Lagos. Rolling out to other states soon.",Toast.LENGTH_LONG).show();
             }
         });
