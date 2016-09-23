@@ -491,6 +491,7 @@ DialogVendorProfile.Close{
                 Handler h = new Handler(Looper.getMainLooper());
                 if(sb.toString().equals("none")){
                     progress.dismiss();
+                    Toast.makeText(context, "No Vendors", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     h.post(new Runnable() {
@@ -528,6 +529,7 @@ DialogVendorProfile.Close{
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -536,6 +538,7 @@ DialogVendorProfile.Close{
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -544,6 +547,7 @@ DialogVendorProfile.Close{
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
