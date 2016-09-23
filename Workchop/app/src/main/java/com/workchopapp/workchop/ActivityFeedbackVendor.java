@@ -69,6 +69,8 @@ public class ActivityFeedbackVendor extends AppCompatActivity {
                 {
                     new sendFeedback(ActivityFeedbackVendor.this).execute(vendorId,subjectText.getText().toString(),
                             feedbackText.getText().toString());
+                    new sendFeedbackMail(ActivityFeedbackVendor.this).execute(vendorId,subjectText.getText().toString(),
+                            feedbackText.getText().toString());
                 }
             }
         });
@@ -140,6 +142,97 @@ public class ActivityFeedbackVendor extends AppCompatActivity {
                             subjectText.setText(""); feedbackText.setText(""); subjectText.setEnabled(false);
                             feedbackText.setEnabled(false); feedbackButton.setEnabled(false);
                             finish();
+                        }
+                        else {
+                        }
+
+                    }
+                });
+                in.close();
+            }
+
+            catch(MalformedURLException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(URISyntaxException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(IOException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            finally{
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                    }
+                });
+            }
+            return null;
+        }
+    }
+
+    private class sendFeedbackMail extends AsyncTask<String,Void,String> {
+        Context context;
+
+        public sendFeedbackMail(Context c){
+            context = c;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String dataUrl = "http://workchopapp.com/mobile_app/send_feedback.php";
+
+            Date date = new Date();
+
+
+            String dataUrlParameters = null;
+            try {
+                dataUrlParameters = "id="+ URLEncoder.encode(params[0],"UTF-8")
+                        +"&subject="+URLEncoder.encode(params[1],"UTF-8")
+                        +"&feedback="+URLEncoder.encode(params[2],"UTF-8")
+                        +"&mode="+URLEncoder.encode("2","UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                Toast.makeText(context,new String("Exception: "+ e.getCause()+ "\n"+ e.getMessage()), Toast.LENGTH_LONG).show();
+            }
+
+            URL url = null;
+            try{
+                url = new URL(dataUrl+"?"+dataUrlParameters);
+                Log.v("INSIDE GET USER VENDORS",dataUrl+"?"+dataUrlParameters);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(dataUrl+"?"+dataUrlParameters));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                final StringBuffer sb = new StringBuffer("");
+                String line="";
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(sb.toString().equals("done")) {
+                            //Toast.makeText(ActivityFeedbackVendor.this,"Feedback Submitted By Mail",Toast.LENGTH_SHORT).show();
                         }
                         else {
                         }

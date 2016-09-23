@@ -69,6 +69,8 @@ public class ActivityReportIssueVendor extends AppCompatActivity {
                 {
                     new sendIssue(ActivityReportIssueVendor.this).execute(vendorId,subjectText.getText().toString(),
                             issueText.getText().toString());
+                    new sendIssueMail(ActivityReportIssueVendor.this).execute(vendorId,subjectText.getText().toString(),
+                            issueText.getText().toString());
                 }
             }
         });
@@ -178,6 +180,97 @@ public class ActivityReportIssueVendor extends AppCompatActivity {
                 h.post(new Runnable() {
                     public void run() {
 
+                    }
+                });
+            }
+            return null;
+        }
+    }
+
+    private class sendIssueMail extends AsyncTask<String,Void,String> {
+        Context context;
+
+        public sendIssueMail(Context c){
+            context = c;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String dataUrl = "http://workchopapp.com/mobile_app/send_issue.php";
+
+            Date date = new Date();
+
+
+            String dataUrlParameters = null;
+            try {
+                dataUrlParameters = "id="+ URLEncoder.encode(params[0],"UTF-8")
+                        +"&subject="+URLEncoder.encode(params[1],"UTF-8")
+                        +"&issue="+URLEncoder.encode(params[2],"UTF-8")
+                        +"&mode="+URLEncoder.encode("2","UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                Toast.makeText(context,new String("Exception: "+ e.getCause()+ "\n"+ e.getMessage()), Toast.LENGTH_LONG).show();
+            }
+
+            URL url = null;
+            try{
+                url = new URL(dataUrl+"?"+dataUrlParameters);
+                Log.v("INSIDE GET USER VENDORS",dataUrl+"?"+dataUrlParameters);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(dataUrl+"?"+dataUrlParameters));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                final StringBuffer sb = new StringBuffer("");
+                String line="";
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(sb.toString().equals("done")) {
+                            //Toast.makeText(ActivityReportIssueVendor.this,"Issue Submitted By Mail",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                        }
+
+                    }
+                });
+                in.close();
+            }
+
+            catch(MalformedURLException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(URISyntaxException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(IOException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            finally{
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
                     }
                 });
             }

@@ -232,7 +232,7 @@ public class ActivityFeedback extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(sb.toString().equals("done")) {
-                            Toast.makeText(ActivityFeedback.this,"Feedback Submitted By Mail",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(ActivityFeedback.this,"Feedback Submitted By Mail",Toast.LENGTH_SHORT).show();
                         }
                         else {
                         }
