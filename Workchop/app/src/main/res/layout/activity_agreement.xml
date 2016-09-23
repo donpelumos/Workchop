@@ -97,7 +97,7 @@
             android:textSize="15sp"
             android:gravity="center_horizontal"
             android:textColor="#666666"
-            android:text="I hereby agree to the abve terms and conditions."/>
+            android:text="I hereby agree to the above terms and conditions."/>
 
     </LinearLayout>
 </RelativeLayout>

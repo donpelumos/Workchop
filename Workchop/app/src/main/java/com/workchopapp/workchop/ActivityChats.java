@@ -569,6 +569,8 @@ public class ActivityChats extends AppCompatActivity implements DialogChat.Retur
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -576,6 +578,8 @@ public class ActivityChats extends AppCompatActivity implements DialogChat.Retur
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -583,6 +587,8 @@ public class ActivityChats extends AppCompatActivity implements DialogChat.Retur
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

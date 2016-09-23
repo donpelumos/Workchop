@@ -38,7 +38,7 @@ public class DialogLocationSelector extends DialogFragment {
     ColorSelected mColorSelected;
     ImageView leftArrow, rightArrow;
     public int selectedHalf;
-    int locationState = 1;
+    int locationState = 2;
 
     public DialogLocationSelector(){
 
@@ -95,7 +95,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 1.0);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -112,7 +112,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 1.0);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -129,7 +129,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 1.0);
@@ -146,7 +146,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -163,7 +163,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -180,7 +180,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -197,7 +197,7 @@ public class DialogLocationSelector extends DialogFragment {
         newQuadrant7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);

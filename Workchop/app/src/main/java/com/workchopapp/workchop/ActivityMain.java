@@ -1668,7 +1668,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         Resources r = getResources();
         float widthDp = (float) width / density;
 
-        ListVendorResult [] vendorRows = new ListVendorResult[rows.size()];
+        ListVendorResult [] vendorRows = null;
         int icon = 1;
         if(vendorTypeIndex == 1){
             icon = R.drawable.icongas;
@@ -1728,16 +1728,20 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 locationString = "Kwari";
                 break;
         }
-        if(rows.size() <5 ) {
+        if(rows.size() <=5 ) {
+            vendorRows = new ListVendorResult[rows.size()];
             for (int i = 0; i < rows.size(); i++) {
                 Log.v("IIII", rows.get(i));
+
                 vendorRows[i] = new ListVendorResult(rows.get(i).split("----")[0], icon, " "+locationString+" ",
                         rows.get(i).split("----")[5]);
             }
         }
         else{
+            vendorRows = new ListVendorResult[5];
             for (int i = 0; i < 5; i++) {
                 Log.v("IIII", rows.get(i));
+
                 vendorRows[i] = new ListVendorResult(rows.get(i).split("----")[0], icon, " " + locationString+" ",
                         rows.get(i).split("----")[5]);
             }
@@ -3197,7 +3201,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
-                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        vendorSearcherDialog.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -3205,7 +3210,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
-                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        vendorSearcherDialog.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -3213,7 +3219,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
-                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        vendorSearcherDialog.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

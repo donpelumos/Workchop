@@ -97,6 +97,13 @@ public class DialogPictureView extends DialogFragment {
             }
 
             catch(Exception e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        accountImage.setImageResource(R.drawable.person);
+                        accountImage.setVisibility(View.VISIBLE);
+                    }
+                });
                 Log.v("ERROR",e.getMessage());
             }
             return null;

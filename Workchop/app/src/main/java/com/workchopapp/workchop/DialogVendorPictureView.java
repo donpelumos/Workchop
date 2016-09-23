@@ -107,7 +107,15 @@ public class DialogVendorPictureView extends DialogFragment {
             }
 
             catch(Exception e){
-                Log.v("ERROR",e.getMessage());
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        vendorPicture.setImageResource(R.drawable.person);
+                        vendorPicture.setVisibility(View.GONE);
+                        vendorPicture.setVisibility(View.VISIBLE);
+                    }
+                });
+                Log.v("ERROR","NO PICTURE FOR VENDOR");
             }
             return null;
         }

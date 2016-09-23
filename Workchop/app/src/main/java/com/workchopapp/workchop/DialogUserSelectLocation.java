@@ -32,7 +32,7 @@ public class DialogUserSelectLocation extends DialogFragment {
     Button selectLocationButton;
     ImageView leftArrow, rightArrow;
     public int selectedHalf;
-    int locationState = 1;
+    int locationState = 2;
     TextView stateText;
     String [] locations1 = {"Ojuelegba | Surulere | Iponri | Festac | Aguda | Bode Thomas | Apapa | Mile 2 | Badagry",
             "Ikeja | Ogba | Opebi | Oregun | Alausa | Berger","Shomolu | Bariga | Anthony | Maryland | Onipanu | Ilupeju",
@@ -103,7 +103,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 1.0);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -119,7 +119,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 1.0);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -135,7 +135,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 1.0);
@@ -151,7 +151,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -167,7 +167,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -183,7 +183,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -199,7 +199,7 @@ public class DialogUserSelectLocation extends DialogFragment {
         newQuadrant7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(locationState == 1) {
+                if(locationState == 2) {
                     newQuadrant1.setAlpha((float) 0.7);
                     newQuadrant2.setAlpha((float) 0.7);
                     newQuadrant3.setAlpha((float) 0.7);
@@ -271,37 +271,39 @@ public class DialogUserSelectLocation extends DialogFragment {
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 locationState = locationState-1;
-                if(locationState == 1){
+                if(locationState == 2){
                     stateText.setText("Federal Capital Territory");
-                    newQuadrant1.setText(locations2[1]);
-                    newQuadrant2.setText(locations2[2]);
-                    newQuadrant3.setText(locations2[3]);
-                    newQuadrant4.setText(locations2[4]);
-                    newQuadrant5.setText(locations2[5]);
-                    newQuadrant6.setText(locations2[6]);
+                    newQuadrant1.setText(locations2[0]);
+                    newQuadrant2.setText(locations2[1]);
+                    newQuadrant3.setText(locations2[2]);
+                    newQuadrant4.setText(locations2[3]);
+                    newQuadrant5.setText(locations2[4]);
+                    newQuadrant6.setText(locations2[5]);
                     newQuadrant7.setVisibility(View.GONE);
                 }
                 else {
-                }
+                }*/
                 Toast.makeText(view.getContext(),"Available only in Lagos. Rolling out to other states soon.",Toast.LENGTH_LONG).show();
             }
         });
         rightArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 locationState = locationState + 1;
                 if(locationState == 2){
                     stateText.setText("Lagos State");
-                    newQuadrant1.setText(locations1[1]);
-                    newQuadrant2.setText(locations1[2]);
-                    newQuadrant3.setText(locations1[3]);
-                    newQuadrant4.setText(locations1[4]);
-                    newQuadrant5.setText(locations1[5]);
-                    newQuadrant6.setText(locations1[6]);
-                    newQuadrant7.setText(locations1[7]);
+                    newQuadrant1.setText(locations1[0]);
+                    newQuadrant2.setText(locations1[1]);
+                    newQuadrant3.setText(locations1[2]);
+                    newQuadrant4.setText(locations1[3]);
+                    newQuadrant5.setText(locations1[4]);
+                    newQuadrant6.setText(locations1[5]);
+                    newQuadrant7.setText(locations1[6]);
                     newQuadrant7.setVisibility(View.VISIBLE);
-                }
+                }*/
                 Toast.makeText(view.getContext(),"Available only in Lagos. Rolling out to other states soon.",Toast.LENGTH_LONG).show();
             }
         });

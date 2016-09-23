@@ -210,7 +210,7 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
         float density = view.getContext().getResources().getDisplayMetrics().density;
         Resources r = getResources();
         float widthDp = (float)width/density;
-        Toast.makeText(view.getContext(),"width - "+width+"PX. height - "+height+"px\n in dp - "+widthDp + " den = "+density,Toast.LENGTH_LONG).show();
+        //Toast.makeText(view.getContext(),"width - "+width+"PX. height - "+height+"px\n in dp - "+widthDp + " den = "+density,Toast.LENGTH_LONG).show();
         vendorImageFrame = (LinearLayout)view.findViewById(R.id.vendorImageFrame);
         if(widthDp < 1480){
             LinearLayout.LayoutParams params = new
