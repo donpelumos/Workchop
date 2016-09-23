@@ -591,7 +591,8 @@ DialogUserSelectLocation.ColorSelected{
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
-                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -599,7 +600,8 @@ DialogUserSelectLocation.ColorSelected{
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
-                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -607,7 +609,8 @@ DialogUserSelectLocation.ColorSelected{
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
-                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();
+                        Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

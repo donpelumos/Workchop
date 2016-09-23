@@ -617,6 +617,7 @@ public class ActivityAccountVendor extends AppCompatActivity implements DialogPi
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -625,6 +626,7 @@ public class ActivityAccountVendor extends AppCompatActivity implements DialogPi
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -633,6 +635,7 @@ public class ActivityAccountVendor extends AppCompatActivity implements DialogPi
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+                        progress.dismiss();
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
