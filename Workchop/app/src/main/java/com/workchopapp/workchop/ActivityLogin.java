@@ -355,7 +355,7 @@ public class ActivityLogin extends AppCompatActivity {
                     navBar.setVisibility(View.VISIBLE);
                     tab1.setText("User Login");
                     tab1.setTransformationMethod(null);
-                    tab2.setText("Vendor Login");
+                    tab2.setText("Tradesman");
                     tab2.setTransformationMethod(null);
 
                 }
@@ -375,7 +375,7 @@ public class ActivityLogin extends AppCompatActivity {
                     navBar.setVisibility(View.VISIBLE);
                     tab1.setText("User Signup");
                     tab1.setTransformationMethod(null);
-                    tab2.setText("Vendor Signup");
+                    tab2.setText("Tradesman");
                     tab2.setTransformationMethod(null);
                     float density = getResources().getDisplayMetrics().density;
 

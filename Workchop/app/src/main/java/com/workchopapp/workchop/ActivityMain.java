@@ -372,7 +372,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 new ListUserProfile("About",R.drawable.aboutvendor),
                 new ListUserProfile("Account",R.drawable.account), new ListUserProfile("Change Password",R.drawable.password ),
                 new ListUserProfile("Feedback",R.drawable.feedback),
-                new ListUserProfile("My Vendors",R.drawable.myvendors), new ListUserProfile("Rate App",R.drawable.rate),
+                new ListUserProfile("My Tradesmen",R.drawable.myvendors), new ListUserProfile("Rate App",R.drawable.rate),
                 new ListUserProfile("Report An Issue",R.drawable.report ), new ListUserProfile("Share",R.drawable.shareicon),
                 new ListUserProfile("Work Points",R.drawable.reward),
                 new ListUserProfile("Terms and Privacy Notice",R.drawable.privacy)};
@@ -557,7 +557,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         option5.setOnTouchListener(new TextHighlighterOnTouchListener(option5));
         option6.setOnTouchListener(new TextHighlighterOnTouchListener(option6));
         progressdialog = new ProgressDialog(this);
-        progressdialog.setTitle("Searching For Vendors");
+        progressdialog.setTitle("Searching For tradesmen");
         progressdialog.setMessage("searching...");
         selector.setEnabled(true);
         selector.setVisibility(View.GONE);
@@ -750,7 +750,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
 
         new phoneNoToFile2(ActivityMain.this).execute(userId);
         backupProgress = new ProgressDialog(ActivityMain.this);
-        backupProgress.setTitle("Backing up contact and vendor information");
+        backupProgress.setTitle("Backing information");
         backupProgress.setMessage("This may take a few minutes");
         getContactsCount();
     }
@@ -1045,7 +1045,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
 
                         }
                         else {
-                            Toast.makeText(context, sb.toString()+" New Message(s) in your Vendor Account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, sb.toString()+" New Message(s) in your Tradesman Account", Toast.LENGTH_SHORT).show();
                             MediaPlayer mp = MediaPlayer.create(context, R.raw.beep1);
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             v.vibrate(400);
@@ -1576,7 +1576,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 ////Toast.makeText(ActivityMain.this,"User location - "+workchopUserLocationIndex,Toast.LENGTH_SHORT).show();
             }
         },2000);
-        Toast.makeText(ActivityMain.this,foundVendors.size()+" VENDORS SUCCESSFULLY ADDED TO YOUR VENDORS LIST",Toast.LENGTH_SHORT).show();
+        Toast.makeText(ActivityMain.this,foundVendors.size()+" TRADESMEN SUCCESSFULLY ADDED TO YOUR TRADESMEN LIST",Toast.LENGTH_SHORT).show();
         uploadUserCotacts();
     }
 
@@ -2159,7 +2159,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     int curr = Integer.parseInt(params[6])+1;
                     //progress.setTitle("Populating Vendors - " + curr +" of "+foundVendors.size());
                     int percent = (int)(double)((curr*100)/foundVendors.size());
-                    progress.setTitle("Saving Vendors - "+ percent+"%");
+                    progress.setTitle("Saving Tradesmen - "+ percent+"%");
                 }
             });
             String dataUrlParameters = null;
@@ -2725,7 +2725,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             }
             ArrayList<Integer> found = findVendors2(treeMap);
 
-            Toast.makeText(ActivityMain.this,String.valueOf(treeMap.size())+" Contacts Exist. Found "+foundVendors2.size()+" Vendors",
+            Toast.makeText(ActivityMain.this,String.valueOf(treeMap.size())+" Contacts Exist. Found "+foundVendors2.size()+" Tradesmen",
                     Toast.LENGTH_SHORT).show();
         }
         else{
@@ -2914,7 +2914,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                         int curr = Integer.parseInt(params[6]) + 1;
                         //backupProgress.setTitle("Backing up data - " + curr + " of " + foundVendors2.size());
                         int percent = (int)(double)((curr*100)/foundVendors2.size());
-                        backupProgress.setTitle("Backing up vendors - "+ percent+"%");
+                        backupProgress.setTitle("Backing up tradesmen - "+ percent+"%");
                     }
                 }
             });
@@ -3197,7 +3197,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     Handler h = new Handler(Looper.getMainLooper());
                     h.post(new Runnable() {
                         public void run() {
-                            Toast.makeText(context, "No Vendors Found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "No Tradesmen Found", Toast.LENGTH_SHORT).show();
                             vendorResultList.setVisibility(View.INVISIBLE);
                         }
                     });
@@ -3253,7 +3253,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     @Override
     public void done(){
         final ProgressDialog progress2 = new ProgressDialog(this);
-        progress2.setTitle("Searching device for vendors");
+        progress2.setTitle("Searching device for tradesmen");
         progress2.setMessage("searching...");
         //progress2.show();
         /*new Handler().postDelayed(new Runnable() {
@@ -3268,8 +3268,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     public void done2(){
 
         progress = new ProgressDialog(this);
-        progress.setTitle("Populating Vendor List");
-        progress.setMessage("Searching device for vendors...");
+        progress.setTitle("Populating Tradesmen List");
+        progress.setMessage("Searching device for tradesmen...");
         progress.show();
     }
 

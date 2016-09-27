@@ -72,7 +72,7 @@
         </activity>
         <activity
             android:name="com.workchopapp.workchop.ActivityMyVendors"
-            android:label="My Vendors"
+            android:label="My Tradesmen"
             android:parentActivityName="com.workchopapp.workchop.ActivityMain" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

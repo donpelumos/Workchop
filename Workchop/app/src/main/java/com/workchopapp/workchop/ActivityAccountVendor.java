@@ -97,7 +97,8 @@ public class ActivityAccountVendor extends AppCompatActivity implements DialogPi
     int confirmationMode = 0;
     ProgressDialog progress;
     int selectedVendorType = 0;
-    String [] vendorList = {"--Vendor Type--","Gas Supplier","Hair Stylist","Make-up Artist","Mechanic","Tailor"};
+    String [] vendorList = {"--Tradesman Type--","Master Gas Supplier","Master Hair Stylist","Master Make-up Artist","Master Mechanic",
+            "Master Tailor"};
     Typeface type;
 
     @Override

@@ -100,7 +100,7 @@ DialogVendorProfile.Close{
         userId = getIntent().getStringExtra("userId");
         vendorType = getIntent().getIntExtra("index",0)+1;
         addingVendor = new ProgressDialog(ActivityMySelectedVendor.this);
-        addingVendor.setTitle("Adding New Vendor");
+        addingVendor.setTitle("Adding New Tradesman");
         index = 0;
         contactsIndex = new ArrayList<Integer>();newContactsIndex = new ArrayList<Integer>();
         contactsName = new ArrayList<String>();contactsNumber = new ArrayList<String>();
@@ -123,23 +123,23 @@ DialogVendorProfile.Close{
 
         fm = getFragmentManager();
         if(intent.getIntExtra("index",0) == 3){
-            title = "My Mechanics";
+            title = "My Master Mechanics";
             icon = R.drawable.iconmechanic;
         }
         else if(intent.getIntExtra("index",0) == 0){
-            title = "My Gas Suppliers";
+            title = "My Master Gas Suppliers";
             icon = R.drawable.icongas;
         }
         else if(intent.getIntExtra("index",0) == 1){
-            title = "My Hair Stylists";
+            title = "My Master Hair Stylists";
             icon = R.drawable.iconstylist;
         }
         else if(intent.getIntExtra("index",0) == 2){
-            title = "My Make-Up Artists";
+            title = "My Master Make-Up Artists";
             icon = R.drawable.iconmakeup;
         }
         else if(intent.getIntExtra("index",0) == 4){
-            title = "My Tailors";
+            title = "My Master Tailors";
             icon = R.drawable.icontailor;
         }
         appBar.setTitle(title);
