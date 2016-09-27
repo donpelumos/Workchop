@@ -622,14 +622,14 @@ public class ActivityLogin extends AppCompatActivity {
                     startActivity(i);
                 }
             });
-            String text1 = "\n\nThe Workchop app is a reference platform that connects you with verified and reviewed vendors close to you. " +
-                    "The vendors are typically reviewed and verified by friends in your contact list and friends in your friends' network.\n" +
+            String text1 = "\n\nThe Workchop app is a reference platform that connects you with verified and reviewed tradesmen close to you. " +
+                    "The tradesmen are typically reviewed and verified by friends in your contact list and friends in your friends' network.\n" +
                     "\n" +
                     "With Workchop you are able to search for vendors which are ranked based on relevance (sector location, reviews and the degree of use by your friends). " +
-                    "Vendors can also create their own accounts through which they manage their online presence and communicate with potential customers " +
+                    "Tradesmen can also create their own accounts through which they manage their online presence and communicate with potential customers " +
                     "like you.\n\n" +
-                    "You can also add and review your own vendors on the Workchop platform to grow your workpoints (WP). " +
-                    "'Workpoints (WP)' helps us rank users and vendors who enjoy using the Workchop app.\n" +
+                    "You can also add and review your own tradesmen on the Workchop platform to grow your workpoints (WP). " +
+                    "'Workpoints (WP)' helps us rank users and tradesmen who enjoy using the Workchop app.\n" +
                     "\n" +
                     "We hope you enjoy using the app as much we enjoyed creating it.\n\nPlease contact us at support@workchoppapp.com, if you have any queries.\n" +
                     "\n" +
