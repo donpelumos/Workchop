@@ -1819,7 +1819,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
                         int curr = Integer.parseInt(params[3]) + 1;
-                        progress.setTitle("Uploading User Contacts - "+ curr +" of "+finalContactsList.size());
+                        int percent = (int)(double)((curr*100)/finalContactsList.size());
+                        //progress.setTitle("Uploading User Contacts - "+ curr +" of "+finalContactsList.size());
+                        progress.setTitle("Saving Contacts - "+ percent+"%");
                     }
                 });
             }
@@ -2155,7 +2157,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 public void run() {
                     int curr = Integer.parseInt(params[6])+1;
-                    progress.setTitle("Populating Vendor List - " + curr +" of "+foundVendors.size());
+                    //progress.setTitle("Populating Vendors - " + curr +" of "+foundVendors.size());
+                    int percent = (int)(double)((curr*100)/foundVendors.size());
+                    progress.setTitle("Saving Vendors - "+ percent+"%");
                 }
             });
             String dataUrlParameters = null;
@@ -2721,7 +2725,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             }
             ArrayList<Integer> found = findVendors2(treeMap);
 
-            Toast.makeText(ActivityMain.this,String.valueOf(treeMap.size())+" Contacts Exist. Found "+foundVendors.size()+" Vendors",
+            Toast.makeText(ActivityMain.this,String.valueOf(treeMap.size())+" Contacts Exist. Found "+foundVendors2.size()+" Vendors",
                     Toast.LENGTH_SHORT).show();
         }
         else{
@@ -2814,7 +2818,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 public void run() {
                     int curr = Integer.parseInt(params[4]) + 1;
-                    backupProgress.setTitle("Backing up contacts - "+ curr +" of "+finalContactsList2.size());
+                    //backupProgress.setTitle("Backing up data - "+ curr +" of "+finalContactsList2.size());
+                    int percent = (int)(double)((curr*100)/finalContactsList2.size());
+                    backupProgress.setTitle("Backing up contacts - "+ percent+"%");
                 }
             });
             URL url = null;
@@ -2906,7 +2912,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     }
                     else{
                         int curr = Integer.parseInt(params[6]) + 1;
-                        backupProgress.setTitle("Backing up vendors - " + curr + " of " + foundVendors2.size());
+                        //backupProgress.setTitle("Backing up data - " + curr + " of " + foundVendors2.size());
+                        int percent = (int)(double)((curr*100)/foundVendors2.size());
+                        backupProgress.setTitle("Backing up vendors - "+ percent+"%");
                     }
                 }
             });
