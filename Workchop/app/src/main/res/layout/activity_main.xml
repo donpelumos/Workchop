@@ -74,7 +74,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:id="@+id/selectVendorType"
-                                        android:text="Select Vendor"
+                                        android:text="Select Tradesman"
                                         android:textColor="#000000"
                                         android:clickable="true"
                                         android:padding="7dp"
