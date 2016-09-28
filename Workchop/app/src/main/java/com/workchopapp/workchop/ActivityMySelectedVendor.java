@@ -491,7 +491,12 @@ DialogVendorProfile.Close{
                 Handler h = new Handler(Looper.getMainLooper());
                 if(sb.toString().equals("none")){
                     progress.dismiss();
-                    Toast.makeText(context, "No Vendors", Toast.LENGTH_SHORT).show();
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "No Tradesmen", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 else{
                     h.post(new Runnable() {

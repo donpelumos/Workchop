@@ -395,7 +395,7 @@ public class ActivityLogin extends AppCompatActivity {
                     navBar.setVisibility(View.VISIBLE);
                     tab1.setText("User Signup");
                     tab1.setTransformationMethod(null);
-                    tab2.setText("Vendor Signup");
+                    tab2.setText("Tradesman");
                     tab2.setTransformationMethod(null);
                 }
             });
@@ -622,7 +622,7 @@ public class ActivityLogin extends AppCompatActivity {
                     startActivity(i);
                 }
             });
-            String text1 = "\n\nThe Workchop app is a reference platform that connects you with verified and reviewed tradesmen close to you. " +
+            String text1 = "\n\n\n\nThe Workchop app is a reference platform that connects you with verified and reviewed tradesmen close to you. " +
                     "The tradesmen are typically reviewed and verified by friends in your contact list and friends in your friends' network.\n" +
                     "\n" +
                     "With Workchop you are able to search for vendors which are ranked based on relevance (sector location, reviews and the degree of use by your friends). " +

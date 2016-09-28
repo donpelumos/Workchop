@@ -55,7 +55,7 @@ public class ActivityForgotPassword extends AppCompatActivity {
     String checkPasswordResult = "";
     TextView selectTect;
     Spinner typeSpinner;
-    String [] typeSpinnerList = {"-- Select Type--","User","Vendor"};
+    String [] typeSpinnerList = {"-- Select Type--","User","Tradesman"};
     ArrayAdapter<String> a1;
     int typeSelected = 0;
     String mobilePhoneNumber="";
