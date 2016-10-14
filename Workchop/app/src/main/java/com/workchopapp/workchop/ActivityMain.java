@@ -1552,7 +1552,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 contactType = 2;
                 workchopVendorList2.add(contactName + " " + String.valueOf(contactType));
             }
-            else if(contactName.toLowerCase().contains("makeup") || contactName.toLowerCase().contains("make up") ){
+            else if(contactName.toLowerCase().contains("makeup") || contactName.toLowerCase().contains("make up" )
+                    || contactName.toLowerCase().contains("mua")){
                 contactType = 3;
                 workchopVendorList3.add(contactName + " " + String.valueOf(contactType));
             }
