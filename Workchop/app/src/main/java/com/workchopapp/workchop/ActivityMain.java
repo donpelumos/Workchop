@@ -2781,7 +2781,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     contactName.toLowerCase().contains("hair stylist") || contactName.toLowerCase().contains("barber")){
                 contactType = 2;
             }
-            else if(contactName.toLowerCase().contains("makeup") || contactName.toLowerCase().contains("make up") ){
+            else if(contactName.toLowerCase().contains("makeup") || contactName.toLowerCase().contains("make up")
+                    || contactName.toLowerCase().contains("mua")){
                 contactType = 3;
             }
             else if(contactName.toLowerCase().contains("mech.") || contactName.toLowerCase().contains("mechanic") ||
