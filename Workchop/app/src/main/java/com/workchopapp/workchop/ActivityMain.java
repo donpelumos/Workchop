@@ -84,6 +84,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1529,6 +1530,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     }
 
     public void uploadUserVendors(){
+        foundVendors = mergeSameFoundVendors(foundVendors);
         for(int i=0; i < foundVendors.size(); i++){
             String [] value = foundVendors.get(i).split(" ");
             Log.v("INSIDE SORTING VENDORS "+i, foundVendors.get(i));
@@ -1548,7 +1550,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 workchopVendorList1.add(contactName + " " + String.valueOf(contactType));
             }
             else if(contactName.toLowerCase().contains("hair") || contactName.toLowerCase().contains("stylist") ||
-            contactName.toLowerCase().contains("hair stylist") || contactName.toLowerCase().contains("barber")){
+            contactName.toLowerCase().contains("hair stylist") || contactName.toLowerCase().contains("barber")
+                    || contactName.toLowerCase().contains("barbing")){
                 contactType = 2;
                 workchopVendorList2.add(contactName + " " + String.valueOf(contactType));
             }
@@ -2759,7 +2762,47 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         //Toast.makeText(ActivityMain.this,"USER CONTACTS FULLY UPLOADED", Toast.LENGTH_LONG).show();
     }
 
+    public ArrayList<String> mergeSameFoundVendors(ArrayList<String> list){
+        list.add("zzzzzzzzzz");
+        ArrayList<String> newResult = new ArrayList<>();
+        Object [] results = list.toArray();
+        String [] result = new String[results.length];
+        int i =0;
+        for(Object o : results){
+            result[i] = o.toString();
+            i++;
+        }
+        Arrays.sort(result);
+        for(int j=0; j<result.length - 1; j++){
+            String first = ""; String second = ""; String previous = "";
+            String firstNumber = result[j].split(" +")[result[j].split(" +").length-1];
+            String secondNumber = result[j+1].split(" +")[result[j+1].split(" +").length - 1];
+            String [] firstLine = result[j].split(" +");
+            for(int k=0; k <firstLine.length-1; k++){
+                first = first + firstLine[k] + " ";
+            }
+            String [] secondLine = result[j+1].split(" +");
+            for(int k=0; k <secondLine.length-1; k++){
+                second = second + secondLine[k] + " ";
+            }
+            if(j > 0) {
+                String[] previousLine = result[j - 1].split(" +");
+                for(int k=0; k <previousLine.length-1; k++){
+                    previous = previous + previousLine[k] + " ";
+                }
+            }
+            if(first.equals(second)){
+                newResult.add(first + firstNumber + "----" + secondNumber);
+            }
+            else if(!first.equals(previous)){
+                newResult.add(first + firstNumber);
+            }
+        }
+        return newResult;
+    }
+
     public void uploadUserVendors2(){
+        foundVendors2 = mergeSameFoundVendors(foundVendors2);
         for(int i=0; i < foundVendors2.size(); i++){
             String [] value = foundVendors2.get(i).split(" ");
             Log.v("INSIDE SORTING VENDORS "+i, foundVendors2.get(i));
@@ -2778,7 +2821,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 contactType = 1;
             }
             else if(contactName.toLowerCase().contains("hair") || contactName.toLowerCase().contains("stylist") ||
-                    contactName.toLowerCase().contains("hair stylist") || contactName.toLowerCase().contains("barber")){
+                    contactName.toLowerCase().contains("hair stylist") || contactName.toLowerCase().contains("barber")
+                    || contactName.toLowerCase().contains("barber")){
                 contactType = 2;
             }
             else if(contactName.toLowerCase().contains("makeup") || contactName.toLowerCase().contains("make up")

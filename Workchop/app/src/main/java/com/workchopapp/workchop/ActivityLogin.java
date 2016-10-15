@@ -485,7 +485,7 @@ public class ActivityLogin extends AppCompatActivity {
                         //new checkEmail(ActivityLogin.this).execute(email.getText().toString());
                         if (userReadyToSignUp == 0 || surname.getText().toString().length() < 3 || firstname.getText().toString().length() < 3
                                 || enterPasword.getText().toString().length() < 3 || phoneNo.getText().toString().length() < 3) {
-                            //Toast.makeText(ActivityLogin.this, "Check Filled Data", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityLogin.this, "Check Filled Data", Toast.LENGTH_SHORT).show();
                         } else if (userReadyToSignUp == 1 && surname.getText().toString().length() >= 3 && firstname.getText().toString().length() >= 3
                                 && enterPasword.getText().toString().length() >= 3 && phoneNo.getText().toString().length() >= 3) {
                             //Toast.makeText(ActivityLogin.this, "READY TO SIGN UP", Toast.LENGTH_SHORT).show();
