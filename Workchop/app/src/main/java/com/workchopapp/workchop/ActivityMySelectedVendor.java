@@ -503,7 +503,7 @@ DialogVendorProfile.Close{
                         public void run() {
                             String [] values = sb.toString().split("----");
                             int i = 0;
-                            Toast.makeText(context,String.valueOf(values.length),Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context,String.valueOf(values.length),Toast.LENGTH_SHORT).show();
                             if(values == null){
 
                             }
