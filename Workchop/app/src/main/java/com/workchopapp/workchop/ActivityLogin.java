@@ -2640,13 +2640,15 @@ public class ActivityLogin extends AppCompatActivity {
                         value.toLowerCase().equals("tailor") || value.toLowerCase().equals("fashion designer")|| value.toLowerCase().equals("fashion") ||
                         value.toLowerCase().equals("hair") || value.toLowerCase().equals("stylist")
                         || value.toLowerCase().equals("mech") || value.toLowerCase().equals("barber") || value.toLowerCase().equals("mech.")
-                        || value.toLowerCase().equals("mua")){
+                        || value.toLowerCase().equals("mua") || value.toLowerCase().equals("barbing")){
                     vendorIndexList.add(index);
                     foundVendors.add(val.getKey());
+                    Log.v("FOUND VENDOR", val.getKey());
                 }
             }
             index++;
         }
+
         return vendorIndexList;
     }
 

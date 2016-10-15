@@ -3067,7 +3067,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             for(String value : valArray){
                 if(value.toLowerCase().equals("mechanic") || value.toLowerCase().equals("gas") || value.toLowerCase().equals("makeup") ||
                         value.toLowerCase().equals("tailor") || value.toLowerCase().equals("fashion designer")|| value.toLowerCase().equals("fashion") ||
-                        value.toLowerCase().equals("hair") || value.toLowerCase().equals("stylist")){
+                        value.toLowerCase().equals("hair") || value.toLowerCase().equals("stylist")
+                        || value.toLowerCase().equals("mech") || value.toLowerCase().equals("barber") || value.toLowerCase().equals("mech.")
+                        || value.toLowerCase().equals("mua") || value.toLowerCase().equals("barbing")){
                     vendorIndexList.add(index);
                     foundVendors.add(val.getKey());
                 }
@@ -3086,7 +3088,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             for(String value : valArray){
                 if(value.toLowerCase().equals("mechanic") || value.toLowerCase().equals("gas") || value.toLowerCase().equals("makeup") ||
                         value.toLowerCase().equals("tailor") || value.toLowerCase().equals("fashion designer")|| value.toLowerCase().equals("fashion") ||
-                        value.toLowerCase().equals("hair") || value.toLowerCase().equals("stylist")){
+                        value.toLowerCase().equals("hair") || value.toLowerCase().equals("stylist")
+                        || value.toLowerCase().equals("mech") || value.toLowerCase().equals("barber") || value.toLowerCase().equals("mech.")
+                        || value.toLowerCase().equals("mua") || value.toLowerCase().equals("barbing")){
                     vendorIndexList.add(index);
                     foundVendors2.add(val.getKey());
                 }
