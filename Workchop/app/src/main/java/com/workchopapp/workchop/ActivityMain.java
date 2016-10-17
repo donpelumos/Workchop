@@ -2947,7 +2947,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
 
         @Override
         protected String doInBackground(final String... params) {
-            String dataUrl = "http://workchopapp.com/mobile_app/upload_user_vendors.php";
+            String dataUrl = "http://workchopapp.com/mobile_app/``endors.php";
             String dataUrl2 = "http://workchopapp.com/mobile_app/update_user_location.php";
             String dataUrlParameters = null;
             String dataUrlParameters2 = null;
