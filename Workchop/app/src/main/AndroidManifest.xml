@@ -195,6 +195,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.workchopapp.workchop.ActivityLogin" />
         </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityConfirmationCode"
+            android:label="Confirmation Code"
+            android:parentActivityName="com.workchopapp.workchop.ActivityLogin"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityLogin" />
+        </activity>
+        <activity
+            android:name="com.workchopapp.workchop.ActivityConfirmationCodeVendor"
+            android:label="Confirmation Code"
+            android:parentActivityName="com.workchopapp.workchop.ActivityLogin"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.workchopapp.workchop.ActivityLogin" />
+        </activity>
     </application>
 
 </manifest>

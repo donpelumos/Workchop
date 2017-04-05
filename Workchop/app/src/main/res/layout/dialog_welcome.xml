@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#efefef">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:background="#ffffff">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/welcome"
+            android:scaleType="centerInside"/>
+    </LinearLayout>
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_gravity="top"
+               android:orientation="vertical"
+               android:padding="5dp">
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/welcomeText"
+                   android:layout_marginTop="6dp"
+                   android:text="You have just joined numerous tradesmen on Workchop. You can be found easily by clients around your specified location who can connect and chat with you."
+                   android:textSize="14sp"/>
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/inviteText"
+                   android:layout_marginTop="4dp"
+                   android:text="Click the link below to invite other tradesmen to this platform."
+                   android:textSize="13sp"/>
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/inviteLink"
+                   android:textColor="@color/WorkchopBlue"
+                   android:layout_marginTop="10dp"
+                   android:clickable="true"
+                   android:text="Invite Others"
+                   android:textSize="13sp"/>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="center_horizontal"
+                   android:orientation="horizontal">
+                   <Button
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/gotItButton"
+                       android:layout_marginTop="15dp"
+                       android:layout_marginBottom="15dp"
+                       android:text="Got It"
+                       android:textSize="13sp"
+                       android:background="@drawable/background_curved_edges_small"/>
+               </LinearLayout>
+
+           </LinearLayout>
+
+
+       </RelativeLayout>
+   </ScrollView>
+
+
+</LinearLayout>

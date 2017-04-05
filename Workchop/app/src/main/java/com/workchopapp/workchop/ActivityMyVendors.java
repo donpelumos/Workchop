@@ -38,10 +38,11 @@ public class ActivityMyVendors extends AppCompatActivity {
         View view = rootView.getRootView();
         userId = getIntent().getStringExtra("userId");
         vendorTypeRows = new ListVendorType[]{
-                new ListVendorType("Master Gas Supplier",R.drawable.icongas),
-                new ListVendorType("Master Hair Stylist",R.drawable.iconstylist),
-                new ListVendorType("Master Make-Up Artist",R.drawable.iconmakeup),
-                new ListVendorType("Master Mechanic",R.drawable.iconmechanic ), new ListVendorType("Master Tailor",R.drawable.icontailor)};
+                new ListVendorType("Master Gas Suppliers",R.drawable.icongas),
+                new ListVendorType("Master Hair Stylists",R.drawable.iconstylist),
+                new ListVendorType("Master Make-Up Artists",R.drawable.iconmakeup),
+                new ListVendorType("Master Mechanics",R.drawable.iconmechanic ),
+                new ListVendorType("Master Tailors",R.drawable.icontailor)};
 
         final AdapterVendorTypeList adp = new AdapterVendorTypeList(view.getContext(),R.layout.row_vendortypelist, vendorTypeRows );
         vendorTypeList.setAdapter(adp);

@@ -56,6 +56,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -106,7 +107,7 @@ public class ActivityLogin extends AppCompatActivity {
     EditText emailOrPhone, password, firstname, surname, email, phoneNo, enterPasword;
     LinearLayout loginLayout, aboutLayout, vendorTypeFrame;
     ScrollView signupLayout;
-    String [] vendorList = {"--Vendor Type--","Gas Supplier","Hair Stylist","Make-up Artist","Mechanic","Tailor"};
+    String [] vendorList = {"--Tradesman Type--","Gas Supplier","Hair Stylist","Make-up Artist","Mechanic","Tailor"};
     ArrayAdapter<String> a1;
     ImageView curve1, curve2, curve3, curve4, curve5, curve6, curve7, curve8;
     AlertDialog confirmDialog;
@@ -130,6 +131,7 @@ public class ActivityLogin extends AppCompatActivity {
     SQLiteDatabase mydatabase, mydatabase2;
     String vendorId = "";
     ImageView logo;
+    int badEmail, badPhoneNo, existingEmail, existingPhoneNo;
 
     int normalTabIndex;
     int [] backgroundImages = {R.drawable.tailors, R.drawable.makeups, R.drawable.mechanics};
@@ -457,7 +459,8 @@ public class ActivityLogin extends AppCompatActivity {
                             signingInProgress.show();
                             new userSignIn(ActivityLogin.this).execute(loggedEmail, loggedPassword);
                         }
-                    } else if (normalTabIndex == 2) {
+                    }
+                    else if (normalTabIndex == 2) {
                         if (emailOrPhone.getText().length() < 1 || password.getText().length() < 1) {
                             //Toast.makeText(ActivityLogin.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                         } else {
@@ -483,11 +486,21 @@ public class ActivityLogin extends AppCompatActivity {
                             //+ phoneNo.getText().toString().length() + "|" + userReadyToSignUp, Toast.LENGTH_SHORT).show();
                     if (normalTabIndex == 1) {
                         //new checkEmail(ActivityLogin.this).execute(email.getText().toString());
-                        if (userReadyToSignUp == 0 || surname.getText().toString().length() < 3 || firstname.getText().toString().length() < 3
+                        if(badEmail == 1){
+                            Toast.makeText(ActivityLogin.this, "Check Email Address", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (existingPhoneNo == 1){
+                            Toast.makeText(ActivityLogin.this, "Phone number already exists", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (badPhoneNo == 1){
+                            Toast.makeText(ActivityLogin.this, "Check Phone Number", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (userReadyToSignUp == 0 || surname.getText().toString().length() < 3 || firstname.getText().toString().length() < 3
                                 || enterPasword.getText().toString().length() < 3 || phoneNo.getText().toString().length() < 3) {
-                            Toast.makeText(ActivityLogin.this, "Check Filled Data", Toast.LENGTH_SHORT).show();
-                        } else if (userReadyToSignUp == 1 && surname.getText().toString().length() >= 3 && firstname.getText().toString().length() >= 3
-                                && enterPasword.getText().toString().length() >= 3 && phoneNo.getText().toString().length() >= 3) {
+                            Toast.makeText(ActivityLogin.this, "Check Filled Data (Too Short)", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (userReadyToSignUp == 1 && surname.getText().toString().length() >= 3 && firstname.getText().toString().length() >= 3
+                                && enterPasword.getText().toString().length() >= 3 && phoneNo.getText().toString().length() > 10) {
                             //Toast.makeText(ActivityLogin.this, "READY TO SIGN UP", Toast.LENGTH_SHORT).show();
                             joinedSurname = surname.getText().toString();
                             joinedFirstname = firstname.getText().toString();
@@ -509,12 +522,25 @@ public class ActivityLogin extends AppCompatActivity {
                         }
                     }
                     else if (normalTabIndex == 2) {
-                        if (userReadyToSignUp == 0 || surname.getText().toString().length() < 3 || firstname.getText().toString().length() < 3
+                        if(badEmail == 1){
+                            Toast.makeText(ActivityLogin.this, "Check Email Address", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (existingPhoneNo == 1){
+                            Toast.makeText(ActivityLogin.this, "Phone number already exists", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (badPhoneNo == 1){
+                            Toast.makeText(ActivityLogin.this, "Check Phone Number", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(selectedVendorType == 0){
+                            Toast.makeText(ActivityLogin.this, "Select Vendor Type", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (userReadyToSignUp == 0 || surname.getText().toString().length() < 3 || firstname.getText().toString().length() < 3
                                 || enterPasword.getText().toString().length() < 3 || phoneNo.getText().toString().length() < 3
                                 || selectedVendorType == 0) {
-                            //Toast.makeText(ActivityLogin.this, "Checked Filled Data", Toast.LENGTH_SHORT).show();
-                        } else if (userReadyToSignUp == 1 && surname.getText().toString().length() >= 3 && firstname.getText().toString().length() >= 3
-                                && enterPasword.getText().toString().length() >= 3 && phoneNo.getText().toString().length() >= 3
+                            Toast.makeText(ActivityLogin.this, "Check Filled Data (Too Short)", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (userReadyToSignUp == 1 && surname.getText().toString().length() >= 3 && firstname.getText().toString().length() >= 3
+                                && enterPasword.getText().toString().length() >= 3 && phoneNo.getText().toString().length() > 10
                                 && selectedVendorType > 0) {
                             //Toast.makeText(ActivityLogin.this, "READY TO SIGN UP", Toast.LENGTH_SHORT).show();
                             joinedSurname = surname.getText().toString();
@@ -549,11 +575,16 @@ public class ActivityLogin extends AppCompatActivity {
                     if (email.getText().toString().length() == 0 && firstname.getText().toString().length() >= 3 && surname.getText().toString().length() >= 3 &&
                             phoneNo.getText().toString().length() >= 3 && enterPasword.getText().toString().length() >= 3) {
                         userReadyToSignUp = 1;
-                    } else if (email.getText().toString().length() > 0) {
+                        badEmail = 0;
+                    }
+                    else if (email.getText().toString().length() > 0) {
                         if (email.getText().toString().contains("@") && email.getText().toString().contains(".")) {
+                            badEmail =0;
                             new checkEmail(ActivityLogin.this).execute(email.getText().toString(), String.valueOf(normalTabIndex));
-                        } else {
+                        }
+                        else {
                             userReadyToSignUp = 0;
+                            badEmail = 1;
                             ////Toast.makeText(ActivityLogin.this,"Invalid Email Format",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -575,11 +606,16 @@ public class ActivityLogin extends AppCompatActivity {
 
                     if (phoneNo.getText().toString().length() > 10) {
                         new checkPhoneNo(ActivityLogin.this).execute(phoneNo.getText().toString(), String.valueOf(normalTabIndex));
-                    } else if (firstname.getText().toString().length() >= 3 && surname.getText().toString().length() >= 3 &&
-                            phoneNo.getText().toString().length() >= 3 && enterPasword.getText().toString().length() >= 3) {
+                        badPhoneNo = 0;
+                    }
+                    else if (firstname.getText().toString().length() >= 3 && surname.getText().toString().length() >= 3 &&
+                            phoneNo.getText().toString().length() > 10 && enterPasword.getText().toString().length() >= 3) {
                         userReadyToSignUp = 1;
-                    } else if (phoneNo.getText().toString().length() == 0) {
+                        badPhoneNo = 0;
+                    }
+                    else if (phoneNo.getText().toString().length() < 11) {
                         userReadyToSignUp = 0;
+                        badPhoneNo = 1;
                     }
                 }
 
@@ -595,6 +631,15 @@ public class ActivityLogin extends AppCompatActivity {
                         // code to execute when EditText loses focus
                         if (email.getText().toString().length() == 0) {
                             userReadyToSignUp = 1;
+                            badEmail = 0;
+                        }
+                        else if(email.getText().toString().contains("@") && email.getText().toString().contains(".")){
+                            userReadyToSignUp = 1;
+                            badEmail = 0;
+                        }
+                        else{
+                            userReadyToSignUp = 0;
+                            badEmail = 1;
                         }
                     }
                 }
@@ -606,6 +651,7 @@ public class ActivityLogin extends AppCompatActivity {
                         // code to execute when EditText loses focus
                         if (phoneNo.getText().toString().length() < 10) {
                             userReadyToSignUp = 0;
+                            badPhoneNo = 1;
                         }
                     }
                 }
@@ -870,10 +916,12 @@ public class ActivityLogin extends AppCompatActivity {
                     public void run() {
                         if(sb.toString().equals("1")) {
                             Toast.makeText(context, "Email Address exists", Toast.LENGTH_LONG).show();
-                            userReadyToSignUp = 0;
+                            existingEmail = 1;
+                            //userReadyToSignUp = 0;
                         }
                         else{
-                            userReadyToSignUp = 1;
+                            //userReadyToSignUp = 1;
+                            existingEmail = 0;
                         }
                     }
                 });
@@ -954,9 +1002,11 @@ public class ActivityLogin extends AppCompatActivity {
                         if(sb.toString().equals("1")) {
                             Toast.makeText(context, "Phone Number exists", Toast.LENGTH_LONG).show();
                             userReadyToSignUp = 0;
+                            existingPhoneNo = 1;
                         }
                         else{
                             userReadyToSignUp = 1;
+                            existingPhoneNo = 0;
                         }
                     }
                 });
@@ -1294,12 +1344,18 @@ public class ActivityLogin extends AppCompatActivity {
             try{
 
                 url = new URL(dataUrl+"?"+dataUrlParameters);
-                HttpClient client = new DefaultHttpClient();
-                HttpParams paramsx = client.getParams();
-                HttpConnectionParams.setConnectionTimeout(paramsx, 3000);
-                HttpConnectionParams.setSoTimeout(paramsx, 3000);
+                HttpParams httpParameters = new BasicHttpParams();
+                // Set the timeout in milliseconds until a connection is established.
+                // The default value is zero, that means the timeout is not used.
+                int timeoutConnection = 4000;
+                HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+                // Set the default socket timeout (SO_TIMEOUT)
+                // in milliseconds which is the timeout for waiting for data.
+                int timeoutSocket = 6000;
+                HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+                HttpClient client = new DefaultHttpClient(httpParameters);
+
                 HttpGet request = new HttpGet();
-                request.setParams(paramsx);
 
                 request.setURI(new URI(dataUrl+"?"+dataUrlParameters));
                 HttpResponse response = client.execute(request);
@@ -1473,6 +1529,10 @@ public class ActivityLogin extends AppCompatActivity {
                         Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+            catch (ConnectTimeoutException e) {
+                //Here Connection TimeOut excepion
+                //Toast.makeText(ActivityLogin.this, "Your connection timedout", Toast.LENGTH_LONG).show();
             }
             catch(IOException e){
                 Handler h = new Handler(Looper.getMainLooper());
@@ -1857,6 +1917,7 @@ public class ActivityLogin extends AppCompatActivity {
 
                             signingInProgress.dismiss();
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -1972,6 +2033,7 @@ public class ActivityLogin extends AppCompatActivity {
                             intent.putExtra("val7","loginScreen");
                             //signingInProgress.dismiss();
                             startActivity(intent);
+                            finish();
                         }
                         else{
                             //Toast.makeText(context, "Correct Email and Password", Toast.LENGTH_LONG).show();
@@ -1996,6 +2058,7 @@ public class ActivityLogin extends AppCompatActivity {
                             intent.putExtra("val7","loginScreen");
                             //signingInProgress.dismiss();
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -2266,11 +2329,24 @@ public class ActivityLogin extends AppCompatActivity {
                         Log.v("Confrer",confirmationCode);
                         DialogPromptVendor dpp = new DialogPromptVendor(confirmationCode, joinedSurname, joinedFirstname, joinedPhoneNo,
                                 joinedPassword, joinedEmail, vendorId, String.valueOf(joinedType));
+                        Intent intent = new Intent(ActivityLogin.this, ActivityConfirmationCodeVendor.class);
+                        //intent.putExtra("val2",finalContactsList);
+                        //intent.putExtra("val3",foundVendors);
+                        intent.putExtra("extra",confirmationCode);
+                        intent.putExtra("surname",joinedSurname);
+                        intent.putExtra("firstname",joinedFirstname);
+                        intent.putExtra("phoneNo",joinedPhoneNo);
+                        intent.putExtra("password",joinedPassword);
+                        intent.putExtra("email",joinedEmail);
+                        intent.putExtra("vendorId",vendorId);
+                        intent.putExtra("type",String.valueOf(joinedType));
                         Bundle b = new Bundle();
                         Log.v("Confrer",confirmationCode);
                         b.putString("val",confirmationCode);
                         dpp.setArguments(b);
-                        dpp.show(getFragmentManager(), "dialog15");
+                        startActivity(intent);
+                        finish();
+                        //dpp.show(getFragmentManager(), "dialog15");
                         //readContacts();
                     }
                 });
@@ -2537,11 +2613,24 @@ public class ActivityLogin extends AppCompatActivity {
                         //readContacts();
                         DialogPromptVendor dpp = new DialogPromptVendor(confirmationCode, joinedSurname, joinedFirstname, joinedPhoneNo,
                                 joinedPassword, joinedEmail, vendorId, String.valueOf(joinedType));
+                        Intent intent = new Intent(ActivityLogin.this, ActivityConfirmationCodeVendor.class);
+                        //intent.putExtra("val2",finalContactsList);
+                        //intent.putExtra("val3",foundVendors);
+                        intent.putExtra("extra",confirmationCode);
+                        intent.putExtra("surname",joinedSurname);
+                        intent.putExtra("firstname",joinedFirstname);
+                        intent.putExtra("phoneNo",joinedPhoneNo);
+                        intent.putExtra("password",joinedPassword);
+                        intent.putExtra("email",joinedEmail);
+                        intent.putExtra("vendorId",vendorId);
+                        intent.putExtra("type",String.valueOf(joinedType));
                         Bundle b = new Bundle();
                         Log.v("Confrer",confirmationCode);
                         b.putString("val",confirmationCode);
                         dpp.setArguments(b);
-                        dpp.show(getFragmentManager(), "dialog15");
+                        startActivity(intent);
+                        finish();
+                        //dpp.show(getFragmentManager(), "dialog15");
                     }
                 });
                 in.close();
@@ -2615,13 +2704,25 @@ public class ActivityLogin extends AppCompatActivity {
             //        Toast.LENGTH_SHORT).show();
             DialogPrompt dpp = new DialogPrompt(confirmationCode, joinedSurname, joinedFirstname, joinedPhoneNo,
                     joinedPassword, joinedEmail, userId);
+            Intent intent = new Intent(ActivityLogin.this, ActivityConfirmationCode.class);
+            intent.putExtra("val2",finalContactsList);
+            intent.putExtra("val3",foundVendors);
+            intent.putExtra("extra",confirmationCode);
+            intent.putExtra("surname",joinedSurname);
+            intent.putExtra("firstname",joinedFirstname);
+            intent.putExtra("phoneNo",joinedPhoneNo);
+            intent.putExtra("password",joinedPassword);
+            intent.putExtra("email",joinedEmail);
+            intent.putExtra("userId",userId);
             Bundle b = new Bundle();
             Log.v("Confrer",confirmationCode);
             b.putString("val",confirmationCode);
             b.putStringArrayList("val2",finalContactsList);
             b.putStringArrayList("val3", foundVendors);
             dpp.setArguments(b);
-            dpp.show(getFragmentManager(), "dialog15");
+            //dpp.show(getFragmentManager(), "dialog15");
+            startActivity(intent);
+            finish();
         }
         else{
             Toast.makeText(ActivityLogin.this,"Contacts don't exist on this device",Toast.LENGTH_SHORT).show();

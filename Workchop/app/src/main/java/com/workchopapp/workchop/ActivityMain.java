@@ -372,7 +372,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         userProfileRows = new ListUserProfile[]{
                 new ListUserProfile("About",R.drawable.aboutvendor),
                 new ListUserProfile("Account",R.drawable.account), new ListUserProfile("Change Password",R.drawable.password ),
-                new ListUserProfile("Feedback",R.drawable.feedback),
+                new ListUserProfile("Feedback",R.drawable.feedback),new ListUserProfile("Invite Friends",R.drawable.invite),
                 new ListUserProfile("My Tradesmen",R.drawable.myvendors), new ListUserProfile("Rate App",R.drawable.rate),
                 new ListUserProfile("Report An Issue",R.drawable.report ), new ListUserProfile("Share",R.drawable.shareicon),
                 new ListUserProfile("Work Points",R.drawable.reward),
@@ -383,11 +383,17 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         userProfileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 4){
+
+                if(position == 5){
                     Intent intent = new Intent(ActivityMain.this, ActivityMyVendors.class);
                     intent.putStringArrayListExtra("foundVendorList",foundVendors);
                     intent.putExtra("userId", userId);
                     startActivity(intent);
+                }
+                else if(position == 4){
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                    startActivityForResult(intent, 1);
                 }
                 else if(position == 1){
                     Intent intent = new Intent(ActivityMain.this, ActivityAccount.class);
@@ -404,7 +410,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     intent.putExtra("userId",userId);
                     startActivity(intent);
                 }
-                else if(position == 5){
+                else if(position == 6){
                     DialogRateApp rateFragment = new DialogRateApp();
                     Bundle bundle = new Bundle();
                     bundle.putString("userId",userId);
@@ -415,29 +421,29 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     DialogAbout aboutFragment = new DialogAbout();
                     aboutFragment.show(getFragmentManager(), "dialog29");
                 }
-                else if(position == 6){
+                else if(position == 7){
                     Intent intent = new Intent(ActivityMain.this, ActivityReportIssue.class);
                     intent.putExtra("userId",userId);
                     startActivity(intent);
                 }
-                else if(position == 7){
+                else if(position == 8){
                     DialogShare dialog = new DialogShare();
                     dialog.show(getFragmentManager(), "dialog33");
                 }
-                else if(position == 8){
+                else if(position == 9){
                     DialogPoints dialog = new DialogPoints();
                     Bundle bundle = new Bundle();
                     bundle.putString("userId",userId);
                     dialog.setArguments(bundle);
                     dialog.show(getFragmentManager(), "dialog32");
                 }
-                else if(position == 9){
+                else if(position == 10){
                     String url = "http://www.workchopapp.com/terms.php";
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
                 }
-                else if(position == 10){
+                else if(position == 11){
                     /*new AlertDialog.Builder(ActivityMain.this)
                             .setIcon(R.drawable.signout)
                             .setTitle("Sign Out")
@@ -732,28 +738,101 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         new getRecent(ActivityMain.this).execute(userId);
 
         handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pollCaller();
-                handler.postDelayed(this,45000);
-            }
-        },5000);
-
         handlerChats = new Handler();
-        handlerChats.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pollCaller2();
-                handlerChats.postDelayed(this,8000);
-            }
-        },5000);
 
         new phoneNoToFile2(ActivityMain.this).execute(userId);
         backupProgress = new ProgressDialog(ActivityMain.this);
         backupProgress.setTitle("Backing information");
         backupProgress.setMessage("This may take a few minutes");
         getContactsCount();
+        if(freshSignIn == 0){
+            startPolling();
+        }
+    }
+
+    public void startPolling(){
+        if(freshSignIn == 0) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pollCaller();
+                    handler.postDelayed(this, 45000);
+                }
+            }, 5000);
+            handlerChats.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pollCaller2();
+                    handlerChats.postDelayed(this,8000);
+                }
+            },5000);
+        }
+        else{
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pollCaller();
+                    handler.postDelayed(this, 45000);
+                }
+            }, 10000);
+            handlerChats.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pollCaller2();
+                    handlerChats.postDelayed(this,8000);
+                }
+            },10000);
+        }
+    }
+
+    public void showWelcomeDialog(){
+        try {
+            DialogWelcome dialogWelcome = new DialogWelcome();
+            dialogWelcome.show(getSupportFragmentManager(), "");
+        }
+        catch(IllegalStateException e){
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1){
+            if(resultCode == RESULT_OK){
+                try {
+                    ContentResolver cr = getContentResolver();
+                    Uri contactData = data.getData();
+                    Cursor cursor = managedQuery(contactData, null, null, null, null);
+                    cursor.moveToFirst();
+                    int numberIndex = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    int nameIndex = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+                    String number = cursor.getString(numberIndex);
+                    String name = cursor.getString(nameIndex);
+                    number = number.replace("+234", "0").replaceAll("\\s+", "");
+                    Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                    sendIntent.setData(Uri.parse("smsto:"));
+                    sendIntent.putExtra("sms_body", "Hello, \r\n\r\nI would like to invite you to join Workchop, the fastest " +
+                            "growing tradesman reference platform where you can find and request tradesmen around you offering " +
+                            "various services with " +
+                            "ease and at no cost.\r\n\r\nTo join Workchop, kindly follow the link below.\r\n\r\nhttp://www.workchopapp.com");
+                    sendIntent.putExtra("address"  , number);
+                    sendIntent.setType("vnd.android-dir/mms-sms");
+                    startActivity(sendIntent);
+                    //Toast.makeText(ActivityVendorMain.this, name + "--" + number, Toast.LENGTH_SHORT).show();
+
+                }
+                catch (Exception e){
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(ActivityMain.this,"Error Adding Contact", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void  phoneNoToFile(){
@@ -1297,6 +1376,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                         if(sb.toString().equals("false")){
                             try {
                                 //progress.dismiss();
+                                //showWelcomeDialog();
                             }
                             catch(NullPointerException e){
 
@@ -1526,6 +1606,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         }
         new getVendorTypes(ActivityMain.this).execute("");
 
+
+
         //Toast.makeText(ActivityMain.this,"USER CONTACTS FULLY UPLOADED", Toast.LENGTH_SHORT).show();
     }
 
@@ -1573,13 +1655,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             new vendorsUploader(ActivityMain.this).execute(userId,contactName,contactNumber,String.valueOf(contactType),"0",
                     String.valueOf(workchopUserLocationIndex), String.valueOf(i));
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //progress.dismiss();
-                ////Toast.makeText(ActivityMain.this,"User location - "+workchopUserLocationIndex,Toast.LENGTH_SHORT).show();
-            }
-        },2000);
+
         Toast.makeText(ActivityMain.this,foundVendors.size()+" TRADESMEN SUCCESSFULLY ADDED TO YOUR TRADESMEN LIST",Toast.LENGTH_SHORT).show();
         uploadUserCotacts();
     }
@@ -1815,6 +1891,9 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
                         progress.dismiss();
+                        if(freshSignIn == 1) {
+                            showWelcomeDialog();
+                        }
                     }
                 });
 
@@ -1825,7 +1904,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                         int curr = Integer.parseInt(params[3]) + 1;
                         int percent = (int)(double)((curr*100)/finalContactsList.size());
                         //progress.setTitle("Uploading User Contacts - "+ curr +" of "+finalContactsList.size());
-                        progress.setTitle("Saving Contacts - "+ percent+"%");
+                        progress.setTitle("Application Setup");
+                        progress.setMessage("Setting up application (this may take a while) - "+ percent+"%");
                     }
                 });
             }
@@ -1944,6 +2024,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     public void run() {
                         ////Toast.makeText(context,"DOWNLOADED VENDOR TYPES = "+workchopVendorList.toString(),Toast.LENGTH_SHORT).show();
                         setVendorTypes();
+                        startPolling();//START POLLING FOR MESSAGES
                     }
                 });
 
@@ -2163,7 +2244,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     int curr = Integer.parseInt(params[6])+1;
                     //progress.setTitle("Populating Vendors - " + curr +" of "+foundVendors.size());
                     int percent = (int)(double)((curr*100)/foundVendors.size());
-                    progress.setTitle("Saving Tradesmen - "+ percent+"%");
+                    progress.setTitle("Saving Tradesmen");
+                    progress.setMessage("Saving Tradesmen from device - "+ percent+"%");
                 }
             });
             String dataUrlParameters = null;
@@ -2219,6 +2301,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+
                         new vendorAsContact(context).execute(params[0],params[1],params[2]);
                     }
                 });
@@ -2636,7 +2719,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                         if(Integer.parseInt(params[1]) < Integer.parseInt(sb.toString())){
                             ////Toast.makeText(context,"NO NEED FOR REFRESH",Toast.LENGTH_SHORT).show();
                         }
-                        else if((Integer.parseInt(params[1])-Integer.parseInt(sb.toString())) > 25 && freshSignIn == 0){
+                        else if((Integer.parseInt(params[1])-Integer.parseInt(sb.toString())) > 35 && freshSignIn == 0){
                             ////Toast.makeText(context,"NEED FOR REFRESH",Toast.LENGTH_SHORT).show();
                             backupProgress.show();
                             readContacts2();
@@ -2866,7 +2949,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     int curr = Integer.parseInt(params[4]) + 1;
                     //backupProgress.setTitle("Backing up data - "+ curr +" of "+finalContactsList2.size());
                     int percent = (int)(double)((curr*100)/finalContactsList2.size());
-                    backupProgress.setTitle("Backing up contacts - "+ percent+"%");
+                    backupProgress.setTitle("Backing up");
+                    backupProgress.setMessage("Backing up contacts - "+ percent+"%");
                 }
             });
             URL url = null;
@@ -2960,7 +3044,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                         int curr = Integer.parseInt(params[6]) + 1;
                         //backupProgress.setTitle("Backing up data - " + curr + " of " + foundVendors2.size());
                         int percent = (int)(double)((curr*100)/foundVendors2.size());
-                        backupProgress.setTitle("Backing up tradesmen - "+ percent+"%");
+                        backupProgress.setMessage("Backing up tradesmen - "+ percent+"%");
+                        backupProgress.setTitle("Backing Up");
                     }
                 }
             });
@@ -3303,8 +3388,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     @Override
     public void done(){
         final ProgressDialog progress2 = new ProgressDialog(this);
-        progress2.setTitle("Searching device for tradesmen");
-        progress2.setMessage("searching...");
+        progress2.setTitle("Populating Tradesmen List");
+        progress2.setMessage("Searching device for tradesmen...");
         //progress2.show();
         /*new Handler().postDelayed(new Runnable() {
             @Override

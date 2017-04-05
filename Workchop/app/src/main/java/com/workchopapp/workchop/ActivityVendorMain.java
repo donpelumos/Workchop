@@ -6,10 +6,12 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -23,6 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -105,6 +108,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
     LinearLayout selector;
     View colorIndicator;
     int comboIndex = 0;
+    int showNoChatMessage = 0;
     int ll = 0;
     TextView lookingFor;
     boolean gpsEnabled;
@@ -132,6 +136,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
     ArrayList<Integer> phoneNotificationIds;
     String currentChatId;
     int totalChatCount = 0;
+    int freshSignIn = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,6 +183,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
             Toast.makeText(ActivityVendorMain.this, "Sample Database not Found", Toast.LENGTH_LONG).show();
             mydatabase  = openOrCreateDatabase("rubbish.db",MODE_PRIVATE,null);
             dialogUserSelectLocation.show(getFragmentManager(),"dialog14");
+            freshSignIn = 1;
             vendorId = intent.getStringExtra("val4");
             Log.v("I HAVE ENTERED","CASE 1");
         }
@@ -193,12 +199,13 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
             progress.setTitle("Loading");
             progress.show();
             //phoneNoToFile();
-            new getChats(ActivityVendorMain.this).execute(vendorId);
+            new getChats(ActivityVendorMain.this).execute(vendorId,"!");
         }
         else if (database.exists() && getIntent().getStringExtra("val7").equals("signupScreen")){
             Toast.makeText(ActivityVendorMain.this, "Sample Database Found", Toast.LENGTH_LONG).show();
             mydatabase  = openOrCreateDatabase("rubbish.db",MODE_PRIVATE,null);
             dialogUserSelectLocation.show(getFragmentManager(),"dialog14");
+            freshSignIn = 1;
             vendorId = intent.getStringExtra("val4");
             Log.v("I HAVE ENTERED","CASE 3");
         }
@@ -229,7 +236,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
             progress.setTitle("Loading");
             progress.show();
             //phoneNoToFile();
-            new getChats(ActivityVendorMain.this).execute(vendorId);
+            new getChats(ActivityVendorMain.this).execute(vendorId,"1");
         }
 
         new setLoggedIn(ActivityVendorMain.this).execute(vendorId);
@@ -282,7 +289,8 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
 
         vendorProfileRows = new ListUserProfile[]{new ListUserProfile("About",R.drawable.aboutvendor),
                 new ListUserProfile("Account",R.drawable.account), new ListUserProfile("Change Password",R.drawable.password ),
-                new ListUserProfile("Feedback",R.drawable.feedback), new ListUserProfile("Rate App",R.drawable.rate),
+                new ListUserProfile("Feedback",R.drawable.feedback), new ListUserProfile("Invite Tradesmen",R.drawable.invite),
+                new ListUserProfile("My User Ratings",R.drawable.vendor_rating), new ListUserProfile("Rate App",R.drawable.rate),
                 new ListUserProfile("Report An Issue",R.drawable.report ), new ListUserProfile("Share",R.drawable.shareicon),
                 new ListUserProfile("Terms and Privacy Notice",R.drawable.privacy)};
 
@@ -307,22 +315,34 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
                     startActivity(intent);
                 }
                 else if(position == 4){
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                    startActivityForResult(intent, 1);
+                }
+                else if(position == 5){
+                    DialogVendorRatings ratingsFragment = new DialogVendorRatings();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("vendorId",vendorId);
+                    ratingsFragment.setArguments(bundle);
+                    ratingsFragment.show(getFragmentManager(), "dialog9");
+                }
+                else if(position == 6){
                     DialogRateAppVendor rateFragment = new DialogRateAppVendor();
                     Bundle bundle = new Bundle();
                     bundle.putString("vendorId",vendorId);
                     rateFragment.setArguments(bundle);
                     rateFragment.show(getFragmentManager(), "dialog9");
                 }
-                else if(position == 5){
+                else if(position == 7){
                     Intent intent = new Intent(ActivityVendorMain.this, ActivityReportIssueVendor.class);
                     intent.putExtra("vendorId",vendorId);
                     startActivity(intent);
                 }
-                else if(position == 6){
+                else if(position == 8){
                     DialogShare dialog = new DialogShare();
                     dialog.show(getFragmentManager(), "dialog33");
                 }
-                else if(position == 7){
+                else if(position == 9){
                     String url = "http://www.workchopapp.com/terms.php";
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
@@ -352,6 +372,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
         }
 
         handler = new Handler();
+        pollCaller();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -370,8 +391,50 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
         },5000);
 
         new phoneNoToFile2(ActivityVendorMain.this).execute(vendorId);
+    }
 
+    public void showWelcomeDialog(){
+        DialogWelcome dialogWelcome = new DialogWelcome();
+        dialogWelcome.show(getSupportFragmentManager(),"");
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1){
+            if(resultCode == RESULT_OK){
+                try {
+                    ContentResolver cr = getContentResolver();
+                    Uri contactData = data.getData();
+                    Cursor cursor = managedQuery(contactData, null, null, null, null);
+                    cursor.moveToFirst();
+                    int numberIndex = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    int nameIndex = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+                    String number = cursor.getString(numberIndex);
+                    String name = cursor.getString(nameIndex);
+                    number = number.replace("+234", "0").replaceAll("\\s+", "");
+                    Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                    sendIntent.setData(Uri.parse("smsto:"));
+                    sendIntent.putExtra("sms_body", "Hello, \r\n\r\nI would like to invite you to join Workchop, the fastest " +
+                            "growing tradesman reference platform where clients/customers can find and request your services with " +
+                            "ease.\r\n\r\nTo join Workchop, kindly follow the link below.\r\n\r\nhttp://www.workchopapp.com");
+                    sendIntent.putExtra("address"  , number);
+                    sendIntent.setType("vnd.android-dir/mms-sms");
+                    startActivity(sendIntent);
+                    //Toast.makeText(ActivityVendorMain.this, name + "--" + number, Toast.LENGTH_SHORT).show();
+
+                }
+                catch (Exception e){
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(ActivityVendorMain.this,"Error Adding Contact", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void phoneNoToFile(){
@@ -488,7 +551,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
         }
         catch(NullPointerException e){
             Log.v("ERROR CAUSE", e.toString());
-            Toast.makeText(ActivityVendorMain.this,"No Chats",Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityVendorMain.this,"No Chats To Display",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -603,58 +666,67 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
                                 chatCounts.add(chatRows[3]);
                                 tempTotalChatCount = tempTotalChatCount + Integer.parseInt(chatRows[3]);
                                 //Log.v("URI", dataUrl2 + "?" + finalDataUrlParameters);
-                                Log.v("CHAT COUNT", chatCounts.get(i) + "");
+                                Log.v("CHAT SIZE COUNT", chatCounts.get(i) + "");
                             }
                             //chats = new ArrayList<ListChats>();
-                            for(int i=0; i<=chats.size(); i++){
-                                chats.remove(0);
+                            //chats = new ArrayList<ListChats>();
+                            //new getChats(ActivityVendorMain.this).execute(vendorId);
+                            if(chats == null){
+                                Log.v("CHATS IS NULL","NULL");
+                                new getChats(context).execute(vendorId,"2");
                             }
-                            chats.clear();
-                            adp.notifyDataSetChanged();
-
-                            for (int i = 0; i < chatNames.size(); i++) {
-                                chats.add(new ListChats(chatNames.get(i), R.drawable.chat, getDateFormat(chatTimes.get(i)),
-                                        Integer.parseInt(chatCounts.get(i))));
-                            }
-                            adp.notifyDataSetChanged();
-                            for(int i=0; i<chatCounts.size(); i++){
-                                Log.v("TOTAL CHAT COUNT",String.valueOf(totalChatCount));
-                                if(chatIds.get(i).equals(currentChatId)){
-
+                            else {
+                                for (int i = 0; i <= chats.size(); i++) {
+                                    //chats.remove(0);
                                 }
-                                else if(totalChatCount > 0 && totalChatCount < tempTotalChatCount ){
-                                    if(Integer.parseInt(chatCounts.get(i)) > 0){
-                                        beep = 1;
+                                chats.clear();
+                                adp.notifyDataSetChanged();
+
+
+                                for (int i = 0; i < chatNames.size(); i++) {
+                                    chats.add(new ListChats(chatNames.get(i), R.drawable.chat, getDateFormat(chatTimes.get(i)),
+                                            Integer.parseInt(chatCounts.get(i))));
+                                }
+                                adp.notifyDataSetChanged();
+                                for (int i = 0; i < chatCounts.size(); i++) {
+                                    Log.v("TOTAL CHAT COUNT", String.valueOf(totalChatCount));
+                                    if (chatIds.get(i).equals(currentChatId)) {
+
+                                    }
+                                    else if (totalChatCount > 0 && totalChatCount < tempTotalChatCount) {
+                                        if (Integer.parseInt(chatCounts.get(i)) > 0) {
+                                            beep = 1;
+                                        }
                                     }
                                 }
-                            }
-                            if(tempTotalChatCount == 0){
-                                totalChatCount = tempTotalChatCount;
-                                beep = 0;
-                            }
-                            else if(totalChatCount != tempTotalChatCount){
-                                totalChatCount = tempTotalChatCount;
-                                beep = 1;
-                            }
-                            else{
-                                beep = 0;
-                            }
-                            if(beep == 1 && totalChatCount > 0){
-                                MediaPlayer mp = MediaPlayer.create(context, R.raw.beep1);
-                                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                v.vibrate(400);
-                                if (mp != null) {
-                                    mp.release();
+                                if (tempTotalChatCount == 0) {
+                                    totalChatCount = tempTotalChatCount;
+                                    beep = 0;
                                 }
-                                mp = MediaPlayer.create(context, R.raw.beep1);
-                                mp.start();
-                                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    public void onCompletion(MediaPlayer mp) {
+                                else if (totalChatCount != tempTotalChatCount) {
+                                    totalChatCount = tempTotalChatCount;
+                                    beep = 1;
+                                }
+                                else {
+                                    beep = 0;
+                                }
+                                if (beep == 1 && totalChatCount > 0) {
+                                    MediaPlayer mp = MediaPlayer.create(context, R.raw.beep1);
+                                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                    v.vibrate(400);
+                                    if (mp != null) {
                                         mp.release();
                                     }
-                                });
-                            }
+                                    mp = MediaPlayer.create(context, R.raw.beep1);
+                                    mp.start();
+                                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        public void onCompletion(MediaPlayer mp) {
+                                            mp.release();
+                                        }
+                                    });
+                                }
 
+                            }
                             /*
                             if (fromScreen.equals("notification")){
                                 fromScreen = "chats";
@@ -714,6 +786,10 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
 
                             Log.v("NEW ADAPTER","SET FOR LIST");
                         }
+                        else if(sb2.toString().equals("false") && showNoChatMessage == 0){
+                            showNoChatMessage = 1;
+                            Toast.makeText(context,"No Chats To Display",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
@@ -761,7 +837,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(final String... params) {
             String dataUrl = "http://workchopapp.com/mobile_app/get_vendor_chat_list.php";
             String dataUrl2 = "http://workchopapp.com/mobile_app/get_vendor_chat_list2.php";
             String dataUrlParameters = null;
@@ -810,6 +886,9 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
                     public void run() {
                         if(sb2.toString().equals("false")){
                             progress.dismiss();
+                            if(freshSignIn == 0) {
+                                showWelcomeDialog();
+                            }
                         }
                         else {
                             if(sb2.toString().contains("------")) {
@@ -825,25 +904,31 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
                                     //seenNotification.add(chatRows[4]);
                                 }
                                 chats = new ArrayList<ListChats>();
-                                for (int i = 0; i < chatNames.size(); i++) {
-                                    Log.v("COUNT", chatCounts.get(i));
-                                    chats.add(new ListChats(chatNames.get(i), R.drawable.chat, getDateFormat(chatTimes.get(i)),
-                                            Integer.parseInt(chatCounts.get(i))));
+                                if(params[1].equals("1")) {
+                                    for (int i = 0; i < chatNames.size(); i++) {
+                                        Log.v("COUNT", chatCounts.get(i));
+                                        chats.add(new ListChats(chatNames.get(i), R.drawable.chat, getDateFormat(chatTimes.get(i)),
+                                                Integer.parseInt(chatCounts.get(i))));
                                 /*
                                 if(checkNotification == 1) {
                                     createNotification(chatIds.get(i), chatNames.get(i),
                                             chatCounts.get(i) + " new messages from " + chatNames.get(i), i);
                                 }*/
+                                    }
+                                    adp = new AdapterChats(getApplicationContext(), R.layout.row_chats, chats);
+                                    messageList.setAdapter(adp);
+                                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                    for (int i = 0; i < chatNames.size(); i++) {
+                                        //notificationManager.cancel(i);
+                                    }
                                 }
-                                adp = new AdapterChats(getApplicationContext(), R.layout.row_chats, chats);
-                                messageList.setAdapter(adp);
-                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                for (int i = 0; i < chatNames.size(); i++) {
-                                    //notificationManager.cancel(i);
-
+                                else{
+                                    adp = new AdapterChats(getApplicationContext(), R.layout.row_chats, chats);
+                                    messageList.setAdapter(adp);
                                 }
                             }
                             progress.dismiss();
+                            //showWelcomeDialog();
                         }
                     }
                 });
@@ -989,7 +1074,8 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(ActivityVendorMain.this)
+        super.onBackPressed();
+        /*new AlertDialog.Builder(ActivityVendorMain.this)
                 .setIcon(R.drawable.exit)
                 .setTitle("Exit Application")
                 .setMessage("Are you sure you want to exit?")
@@ -1008,7 +1094,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                .show();
+                .show();*/
     }
 
     @Override

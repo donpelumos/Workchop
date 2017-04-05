@@ -880,7 +880,7 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
                             for (int i = 0; i < reviews.length; i++) {
                                 String[] reviewRow = reviews[i].split("--");
                                 reviewContainer.addView(setReview(reviewRow[0] + " " + reviewRow[1], reviewRow[2], Integer.parseInt(reviewRow[3]),
-                                        context, reviewRow[4]));
+                                        context, reviewRow[4], reviewRow[5]));
                             }
                         }
                     }
@@ -1082,7 +1082,7 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
         }
     }
 
-    public LinearLayout setReview(String name, String message, int rating, Context context, String points){
+    public LinearLayout setReview(String name, String message, int rating, Context context, String points, String date){
         Typeface type = null;
         try {
             type = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
@@ -1098,7 +1098,7 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
         reviewFrame.setLayoutParams(reviewFrameParams);
 
         LinearLayout nameTextCase = new LinearLayout(context);
-        LinearLayout.LayoutParams nameTextCaseParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams nameTextCaseParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         nameTextCase.setGravity(Gravity.CENTER_VERTICAL);
         nameTextCase.setOrientation(LinearLayout.HORIZONTAL);
@@ -1135,9 +1135,32 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
         namePoints.setTextColor(Color.parseColor("#000000"));
         namePoints.setText(" "+points);
 
+        LinearLayout dateTimeCase = new LinearLayout(context);
+        LinearLayout.LayoutParams dateTimeCaseParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        dateTimeCase.setGravity(Gravity.RIGHT);
+        dateTimeCase.setOrientation(LinearLayout.HORIZONTAL);
+        dateTimeCase.setLayoutParams(dateTimeCaseParams);
+
+        TextView dateTime = new TextView(context);
+        LinearLayout.LayoutParams dateTimeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        dateTimeParams.setMargins(0,0,(int)(5*density),0);
+        dateTimeParams.gravity = Gravity.RIGHT;
+        dateTime.setGravity(Gravity.RIGHT);
+        dateTime.setPadding((int)(1*density),(int)(4*density),0,0);
+        dateTime.setLayoutParams(dateTimeParams);
+        dateTime.setTypeface(type, Typeface.NORMAL);
+        dateTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+        dateTime.setTextColor(Color.parseColor("#222222"));
+        dateTime.setText(getDateFormat(date));
+
+        dateTimeCase.addView(dateTime);
+
         nameTextCase.addView(nameText);
         nameTextCase.addView(pointsImage);
         nameTextCase.addView(namePoints);
+        nameTextCase.addView(dateTimeCase);
 
         TextView reviewText = new TextView(context);
         LinearLayout.LayoutParams reviewTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -1184,6 +1207,30 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
         reviewFrame.addView(lineView);
 
         return reviewFrame;
+    }
+
+    public String getDateFormat(String date){
+        String newFormat = "";
+        String datePart = date.split(" ")[0];
+        String timePart = date.split(" ")[1];
+        String year = datePart.split("-")[0];
+        String month = datePart.split("-")[1];
+        String day = datePart.split("-")[2];
+        String dayString = day;
+        String [] months = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+        String monthString = months[Integer.parseInt(month)-1];
+
+        String hour = timePart.split(":")[0];
+        String timeSector = "am";
+        if(Integer.parseInt(hour)>12){
+            hour = String.valueOf(Integer.parseInt(hour)-12);
+            timeSector = "pm";
+        }
+        String minute = timePart.split(":")[1];
+        String second = timePart.split(":")[2];
+
+        newFormat = monthString+"-"+dayString+" | "+hour+":"+minute+" "+timeSector;
+        return newFormat;
     }
 
     private class ImageHighlighterOnTouchListener implements View.OnTouchListener {

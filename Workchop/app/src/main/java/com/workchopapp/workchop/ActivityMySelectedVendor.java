@@ -180,8 +180,8 @@ DialogVendorProfile.Close{
                 vendorToBeDeletedPosition = position;
                 new AlertDialog.Builder(ActivityMySelectedVendor.this)
                         .setIcon(R.drawable.delete)
-                        .setTitle("Remove Vendor")
-                        .setMessage("Are you sure you want to remove this vendor?")
+                        .setTitle("Remove Tradesman")
+                        .setMessage("Are you sure you want to remove this tradesman?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
