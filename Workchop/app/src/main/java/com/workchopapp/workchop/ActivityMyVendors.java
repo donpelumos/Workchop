@@ -1,12 +1,17 @@
 package com.workchopapp.workchop;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +20,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -37,15 +57,15 @@ public class ActivityMyVendors extends AppCompatActivity {
         final View rootView = this.getLayoutInflater().inflate(R.layout.row_vendortypelist, null);
         View view = rootView.getRootView();
         userId = getIntent().getStringExtra("userId");
-        vendorTypeRows = new ListVendorType[]{
-                new ListVendorType("Master Gas Suppliers",R.drawable.icongas),
-                new ListVendorType("Master Hair Stylists",R.drawable.iconstylist),
-                new ListVendorType("Master Make-Up Artists",R.drawable.iconmakeup),
-                new ListVendorType("Master Mechanics",R.drawable.iconmechanic ),
-                new ListVendorType("Master Tailors",R.drawable.icontailor)};
+        /*vendorTypeRows = new ListVendorType[]{
+                new ListVendorType("Master Gas Suppliers",R.drawable.icongas,"0"),
+                new ListVendorType("Master Hair Stylists",R.drawable.iconstylist,"4"),
+                new ListVendorType("Master Make-Up Artists",R.drawable.iconmakeup,"4"),
+                new ListVendorType("Master Mechanics",R.drawable.iconmechanic ,"0"),
+                new ListVendorType("Master Tailors",R.drawable.icontailor,"4")};
 
         final AdapterVendorTypeList adp = new AdapterVendorTypeList(view.getContext(),R.layout.row_vendortypelist, vendorTypeRows );
-        vendorTypeList.setAdapter(adp);
+        vendorTypeList.setAdapter(adp);*/
         vendorsList = getIntent().getStringArrayListExtra("foundVendorList");
         //Toast.makeText(this,vendorsList.size() + " found",Toast.LENGTH_SHORT).show();
         tailorList = new ArrayList<>();  mechanicList = new ArrayList<>();  makeUpList = new ArrayList<>();
@@ -85,7 +105,90 @@ public class ActivityMyVendors extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        new getTradesmenCount(ActivityMyVendors.this).execute(userId);
 
+    }
+
+    private class getTradesmenCount extends AsyncTask<String,Void,String> {
+        Context context;
+
+        public getTradesmenCount(Context c){
+            context = c;
+        }
+
+        @Override
+        protected String doInBackground(final String... params) {
+            String dataUrl = "http://workchopapp.com/mobile_app/get_user_vendor_counts.php";
+            String dataUrlParameters="";
+            try{
+                dataUrlParameters = "user_id="+ URLEncoder.encode(params[0],"UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+
+            }
+            try {
+                HttpClient client2 = new DefaultHttpClient();
+                HttpGet request2 = new HttpGet();
+                request2.setURI(new URI(dataUrl + "?" + dataUrlParameters));
+                HttpResponse response2 = client2.execute(request2);
+                BufferedReader in2 = new BufferedReader(new InputStreamReader(response2.getEntity().getContent()));
+
+                Log.v("TAGV",dataUrl + "?" + dataUrlParameters);
+                final StringBuffer sb2 = new StringBuffer("");
+                String line2 = "";
+                while ((line2 = in2.readLine()) != null) {
+                    sb2.append(line2);
+                    break;
+                }
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    public void run() {
+                        String [] counts = sb2.toString().split("--");
+                        vendorTypeRows = new ListVendorType[]{
+                                new ListVendorType("Master Gas Suppliers",R.drawable.icongas,counts[0]),
+                                new ListVendorType("Master Hair Stylists",R.drawable.iconstylist,counts[1]),
+                                new ListVendorType("Master Make-Up Artists",R.drawable.iconmakeup,counts[2]),
+                                new ListVendorType("Master Mechanics",R.drawable.iconmechanic ,counts[3]),
+                                new ListVendorType("Master Tailors",R.drawable.icontailor,counts[4])};
+
+                        final AdapterVendorTypeList adp = new AdapterVendorTypeList(context,R.layout.row_vendortypelist, vendorTypeRows );
+                        vendorTypeList.setAdapter(adp);
+                    }
+                });
+            }
+            catch(MalformedURLException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(URISyntaxException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(IOException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            finally{
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+
+                    }
+                });
+            }
+            return null;
+        }
     }
 
     public void populateList(){

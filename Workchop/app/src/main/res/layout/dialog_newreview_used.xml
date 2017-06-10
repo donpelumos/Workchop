@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Review This Vendor"
+            android:text="Review This Tradesman"
             android:id="@+id/reviewLabel"
             android:background="#E8E8E8"
             android:padding="5dp"
@@ -61,7 +61,7 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="20dp"
             android:id="@+id/rateLabel"
-            android:text="Rate Vendor : "
+            android:text="Rate Tradesman : "
             android:textSize="16sp"
             android:textColor="#111111"/>
         <LinearLayout

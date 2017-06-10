@@ -49,21 +49,15 @@ import java.util.Date;
  * Created by BALE on 20/07/2016.
  */
 
-public class DialogNewReviewUsed extends DialogFragment {
+public class DialogNewReviewSignUp extends DialogFragment {
     ImageView star1, star2, star3, star4, star5;
     int currentIndex, rated, starsRated=0;
     Button reviewButton;
     AlertDialog dialog;
-    String userId, vendorId;
-    TextView reviewLabel, rateLabel;
+    String userId, vendorId, vendorName;
+    TextView reviewLabel, rateLabel, message;
     EditText reviewText;
-    LinearLayout reviewQuestionContainer, reviewContainer;
-    Button yesButton, noButton;
-    TextView question;
-    String questionText, dateTime;
-    int fromScreen = 0;//If 1, its normal check, but if 2, its check on sign up to rate found tradesmen
-
-    public DialogNewReviewUsed(){
+    public DialogNewReviewSignUp(){
 
     }
     @Override
@@ -72,50 +66,25 @@ public class DialogNewReviewUsed extends DialogFragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         final LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_newreview_used, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_newreview_signup, null);
         builder.setView(view);
         dialog = builder.create();
         currentIndex = 0;
         rated = 0;
         userId = getArguments().getString("userId");
         vendorId = getArguments().getString("vendorId");
-        questionText = getArguments().getString("question");
-        fromScreen = getArguments().getInt("fromScreen");
-        dateTime = getArguments().getString("date_time");
+        vendorName = getArguments().getString("vendorName");
         Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/GOTHIC.TTF");
         reviewLabel = (TextView)view.findViewById(R.id.reviewLabel);
         rateLabel = (TextView)view.findViewById(R.id.rateLabel);
+        message = (TextView)view.findViewById(R.id.message);
         reviewText = (EditText)view.findViewById(R.id.reviewText);
-        reviewContainer = (LinearLayout)view.findViewById(R.id.reviewContainer);
-        reviewQuestionContainer = (LinearLayout)view.findViewById(R.id.reviewQuestionContainer);
-        question = (TextView)view.findViewById(R.id.question);
-        yesButton = (Button)view.findViewById(R.id.yesButton);
-        noButton = (Button)view.findViewById(R.id.noButton);
-        question.setText(questionText);
-
         reviewLabel.setTypeface(type);
         rateLabel.setTypeface(type);
         reviewText.setTypeface(type);
+        message.setTypeface(type);
+        message.setText("Kindly rate or review "+vendorName);
         reviewButton = (Button)view.findViewById(R.id.reviewButton);
-        question.setTypeface(type);
-        yesButton.setTypeface(type);
-        noButton.setTypeface(type);
-        noButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(fromScreen == 1) {
-                    new updateProbability(getActivity().getApplicationContext()).execute(userId, vendorId, dateTime, "2");
-                }
-                dismiss();
-            }
-        });
-        yesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reviewQuestionContainer.setVisibility(View.GONE);
-                reviewContainer.setVisibility(View.VISIBLE);
-            }
-        });
         reviewButton.setOnTouchListener(new ButtonHighlighterOnTouchListener(reviewButton));
         reviewButton.setTypeface(type);
         reviewButton.setOnClickListener(new View.OnClickListener() {
@@ -433,64 +402,7 @@ public class DialogNewReviewUsed extends DialogFragment {
                     public void run() {
                         if(sb.toString().equals("done")) {
                             Toast.makeText(context, "Review Successful", Toast.LENGTH_LONG).show();
-                            new updateProbability(context).execute(userId,vendorId,dateTime,"1");
-                            new updatePoints(context).execute(userId,"3");
-                        }
-                    }
-                });
-            }
-            catch(Exception e){
-                Log.v("ERROR",e.getMessage());
-            }
-            return null;
-        }
-    }
-
-    private class updateProbability extends AsyncTask<String,Void,String> {
-        Context context;
-
-        public updateProbability(Context c){
-            context = c;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String dataUrl= "http://workchopapp.com/mobile_app/update_probably_used.php";
-
-            Date date = new Date();
-            URL url = null;
-            String dataUrlParameters = null;
-            try{
-                dataUrlParameters = "user_id="+ URLEncoder.encode(params[0],"UTF-8")
-                        +"&vendor_id="+URLEncoder.encode(params[1],"UTF-8")
-                        +"&date_time="+URLEncoder.encode(params[2],"UTF-8")
-                        +"&used="+URLEncoder.encode(params[3],"UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                Toast.makeText(getActivity(),new String("Exception: "+ e.getCause()+ "\n"+ e.getMessage()), Toast.LENGTH_LONG).show();
-            }
-            try {
-
-                url = new URL(dataUrl + "?" + dataUrlParameters);
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(dataUrl + "?" + dataUrlParameters));
-                HttpResponse response = client.execute(request);
-                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-                final StringBuffer sb = new StringBuffer("");
-                String line = "";
-                Log.v("ADDRESS", dataUrl + "?" + dataUrlParameters);
-                while ((line = in.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-                Handler h = new Handler(Looper.getMainLooper());
-                h.post(new Runnable() {
-                    public void run() {
-                        if(sb.toString().equals("done")) {
-                            Log.v("PROBABLY USED","UPDATED");
+                            new updatePoints(context).execute(userId,"1");
                         }
                     }
                 });

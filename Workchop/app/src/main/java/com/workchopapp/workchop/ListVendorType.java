@@ -5,10 +5,11 @@ package com.workchopapp.workchop;
  */
 
 public class ListVendorType {
-    String menuName;
+    String menuName, menuCount;
     int menuImage;
-    public ListVendorType(String menuName, int menuImage){
+    public ListVendorType(String menuName, int menuImage, String menuCount){
         this.menuImage = menuImage;
         this.menuName = menuName;
+        this.menuCount = menuCount;
     }
 }

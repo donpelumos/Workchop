@@ -103,7 +103,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     int index;
     Map<String, String> sortedContacts;
     ArrayList<String> contactsName, contactsNumber, contactsDetails, newContactsName, newContactsNumber, foundVendors, foundVendorsCount,
-            finalContactsList, foundVendors2, finalContactsList2;
+            finalContactsList, foundVendors2, finalContactsList2, userVendorNames, userVendorIds;
     ArrayList<Integer> contactsIndex, newContactsIndex;
     LinearLayout contactList;
     TabHost tabHost;
@@ -161,6 +161,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         contactsName = new ArrayList<String>();contactsNumber = new ArrayList<String>();
         newContactsName = new ArrayList<String>();newContactsNumber = new ArrayList<String>();
         contactsIndex = new ArrayList<Integer>();newContactsIndex = new ArrayList<Integer>();
+        userVendorNames = new ArrayList<>(); userVendorIds = new ArrayList<>();
         selectedIndex = 0;  optionsVisible = 0;
         selectVendorType = (TextView)findViewById(R.id.selectVendorType);
         selectVendorTypeIcon = (ImageView)findViewById(R.id.selectVendorTypeIcon);
@@ -774,14 +775,14 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     pollCaller();
                     handler.postDelayed(this, 45000);
                 }
-            }, 10000);
+            }, 20000);
             handlerChats.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     pollCaller2();
                     handlerChats.postDelayed(this,8000);
                 }
-            },10000);
+            },20000);
         }
     }
 
@@ -895,9 +896,11 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     sb.append(line);
                     break;
                 }
+                Log.v("VTAG",dataUrl+"?"+dataUrlParameters);
                 Handler h = new Handler(Looper.getMainLooper());
                 h.post(new Runnable() {
                     public void run() {
+
                         loggedPhoneNo = sb.toString().split("--")[2];
                         phoneNoToFile();
                     }
@@ -1253,6 +1256,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 Bundle bundle = new Bundle();
                 bundle.putString("userId",userId);
                 bundle.putString("vendorId",rows[i].split("--")[1]);
+                bundle.putInt("fromScreen",1);
                 bundle.putString("question","Did you recently use "+rows[i].split("--")[2]);
                 bundle.putString("date_time",rows[i].split("--")[3]);
                 dialog.setArguments(bundle);
@@ -1417,6 +1421,94 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                             //final AdapterChats adp = new AdapterChats(getApplicationContext(),R.layout.row_chats, chats );
                             //messageList.setAdapter(adp);
                             //progress.dismiss();
+                        }
+                    }
+                });
+                in.close();
+            }
+
+            catch(MalformedURLException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(URISyntaxException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch(IOException e){
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            finally{
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+
+                    }
+                });
+            }
+            return null;
+        }
+    }
+
+    private class getUserVendors extends AsyncTask<String, Void, String> {
+        Context context;
+        public getUserVendors(Context c){
+            context = c;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String dataUrl = "http://workchopapp.com/mobile_app/get_user_vendors.php";
+            String dataUrlParameters = null;
+            String dataUrlParameters2 = null;
+
+            try {
+                dataUrlParameters = "user_id="+ URLEncoder.encode(params[0],"UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                //Toast.makeText(context,new String("Exception: "+ e.getCause()+ "\n"+ e.getMessage()), Toast.LENGTH_SHORT).show();
+            }
+
+            URL url = null;
+            HttpURLConnection connection = null;
+            try{
+
+                url = new URL(dataUrl+"?"+dataUrlParameters);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(dataUrl+"?"+dataUrlParameters));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                final StringBuffer sb = new StringBuffer("");
+                String line="";
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                Handler h = new Handler(Looper.getMainLooper());
+                h.post(new Runnable() {
+                    public void run() {
+                        if(sb.toString().contains("------")){
+                            String [] rows = sb.toString().split("------");
+                            for(int i=0; i<rows.length; i++){
+                                userVendorNames.add(rows[i].split("--")[0]);
+                                userVendorIds.add(rows[i].split("--")[1]);
+                            }
+                            showRateVendorsFoundOnDevice();
                         }
                     }
                 });
@@ -1885,17 +1977,74 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         @Override
         protected String doInBackground(final String... params) {
             String dataUrl = "http://workchopapp.com/mobile_app/upload_user_contacts.php";
+            String dataUrl2 = "http://workchopapp.com/mobile_app/update_user_location.php";
 
 
+            String dataUrlParameters2 = null;
             if(Integer.parseInt(params[3])+1 == finalContactsList.size()){
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    public void run() {
-                        progress.dismiss();
-                        if(freshSignIn == 1) {
-                            showWelcomeDialog();
-                        }
+                try{
+                    dataUrlParameters2 = "id="+ URLEncoder.encode(params[0],"UTF-8")
+                            +"&location_index="+URLEncoder.encode(String.valueOf(workchopUserLocationIndex),"UTF-8");
+                }
+                catch (UnsupportedEncodingException e) {
+
+                }
+                try {
+                    HttpClient client2 = new DefaultHttpClient();
+                    HttpGet request2 = new HttpGet();
+                    request2.setURI(new URI(dataUrl2 + "?" + dataUrlParameters2));
+                    HttpResponse response2 = client2.execute(request2);
+                    BufferedReader in2 = new BufferedReader(new InputStreamReader(response2.getEntity().getContent()));
+
+                    final StringBuffer sb2 = new StringBuffer("");
+                    String line2 = "";
+                    while ((line2 = in2.readLine()) != null) {
+                        sb2.append(line2);
+                        break;
                     }
-                });
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        public void run() {
+                            progress.dismiss();
+                            if (freshSignIn == 1) {
+                                new getUserVendors(ActivityMain.this).execute(userId);
+                                //showRateVendorsFoundOnDevice();
+                                //showWelcomeDialog();
+                            }
+                        }
+                    });
+                }
+                catch(MalformedURLException e){
+                    Handler h = new Handler(Looper.getMainLooper());
+                    h.post(new Runnable() {
+                        public void run() {
+                            //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                catch(URISyntaxException e){
+                    Handler h = new Handler(Looper.getMainLooper());
+                    h.post(new Runnable() {
+                        public void run() {
+                            //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                catch(IOException e){
+                    Handler h = new Handler(Looper.getMainLooper());
+                    h.post(new Runnable() {
+                        public void run() {
+                            //Toast.makeText(context, "Unable to Connect", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                finally{
+                    Handler h = new Handler(Looper.getMainLooper());
+                    h.post(new Runnable() {
+                        public void run() {
+
+                        }
+                    });
+                }
 
             }
             else{
@@ -1982,6 +2131,39 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 });
             }
             return null;
+        }
+    }
+
+    public void showRateVendorsFoundOnDevice(){
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityMain.this);
+        dialog.setTitle("Rate Tradesmen");
+        dialog.setMessage("Do you want to rate or review the tradesmen found on your device?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for(int i=0; i<userVendorIds.size(); i++){
+                    DialogNewReviewSignUp dialogNewReviewSignUp = new DialogNewReviewSignUp();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userId",userId);
+                    bundle.putString("vendorId",userVendorIds.get(i));
+                    bundle.putString("vendorName", userVendorNames.get(i));
+                    dialogNewReviewSignUp.setArguments(bundle);
+                    dialogNewReviewSignUp.show(getFragmentManager(), " ");
+                }
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showWelcomeDialog();//To be done when finished
+            }
+        });
+        if(userVendorNames.size() > 0){
+            dialog.show();
+        }
+        else{
+            showWelcomeDialog();//To be done when finished
         }
     }
 

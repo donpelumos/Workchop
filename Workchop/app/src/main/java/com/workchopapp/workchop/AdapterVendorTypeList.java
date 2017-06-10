@@ -33,18 +33,25 @@ public class AdapterVendorTypeList extends ArrayAdapter<ListVendorType> {
         View inflate = view;
         ImageView menuImage = null;
         TextView menuText = null;
+        TextView menuCount = null;
         if (inflate == null) {
             inflate = LayoutInflater.from(getContext()).inflate(this.layoutResourceId, null);
             //Log.v("DONE","Done");
         }
         menuImage = (ImageView)inflate.findViewById(R.id.vendorTypeIcon);
         menuText = (TextView)inflate.findViewById(R.id.vendorTypeText);
+        menuCount = (TextView)inflate.findViewById(R.id.tradesmanCount);
         //inflate.setTag((Object)tag);
 
         Typeface type = Typeface.createFromAsset(getContext().getAssets(),"fonts/GOTHIC.TTF");
         final ListVendorType list = this.data[n];
         menuText.setText((CharSequence)list.menuName);
         menuText.setTypeface(type);
+        menuCount.setTypeface(type);
+        menuCount.setText(list.menuCount);
+        if(list.menuCount.equals("0")){
+            //menuCount.setVisibility(View.INVISIBLE);
+        }
         menuImage.setImageResource(list.menuImage);
 
 

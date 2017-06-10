@@ -97,7 +97,7 @@ public class DialogShare extends DialogFragment{
                     ShareLinkContent linkContent = new ShareLinkContent.Builder()
                             .setContentTitle("Workchop")
                             .setContentDescription(
-                                    "Get access to vendors easily by using Workchop")
+                                    "Get access to tradesmen nearest to you recommended by your friends by using Workchop")
                             .setContentUrl(Uri.parse("http://www.workchopapp.com"))
                             .build();
 
@@ -119,7 +119,7 @@ public class DialogShare extends DialogFragment{
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon); // your bitmap
                 ByteArrayOutputStream bs = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bs);
-                tweetIntent.putExtra(Intent.EXTRA_TEXT, "Get access to vendors easily by using Workchop - http://www.workchopapp.com ");
+                tweetIntent.putExtra(Intent.EXTRA_TEXT, "Get access to tradesmen nearest to you recommended by your friends by using Workchop - http://www.workchopapp.com ");
                 tweetIntent.putExtra(Intent.EXTRA_STREAM,
                         Uri.parse("android.resource://com.workchopapp.workchop/" + R.drawable.icontwitter));
                 tweetIntent.setType("text/plain");
@@ -140,7 +140,7 @@ public class DialogShare extends DialogFragment{
                 }
                 else{
                     Intent i = new Intent();
-                    i.putExtra(Intent.EXTRA_TEXT, "Get access to vendors easily by using Workchop - http://www.workchopapp.com ");
+                    i.putExtra(Intent.EXTRA_TEXT, "Get access to tradesmen nearest to you recommended by your friends by using Workchop - http://www.workchopapp.com ");
                     i.setAction(Intent.ACTION_VIEW);
                     i.setData(Uri.parse("https://twitter.com/intent/tweet?text="
                             +urlEncode("Get access to vendors easily by using Workchop - http://www.workchopapp.com ")));

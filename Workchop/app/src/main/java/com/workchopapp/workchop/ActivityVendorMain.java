@@ -886,7 +886,7 @@ public class ActivityVendorMain extends AppCompatActivity implements DialogUserS
                     public void run() {
                         if(sb2.toString().equals("false")){
                             progress.dismiss();
-                            if(freshSignIn == 0) {
+                            if(freshSignIn == 1) {
                                 showWelcomeDialog();
                             }
                         }
