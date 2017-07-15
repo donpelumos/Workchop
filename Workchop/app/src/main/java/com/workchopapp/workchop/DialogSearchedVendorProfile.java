@@ -44,6 +44,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -71,8 +74,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import tracking.AnalyticsApplication;
+
 import static android.app.Activity.RESULT_OK;
 import static com.workchopapp.workchop.R.id.imageView;
+import static com.workchopapp.workchop.R.id.vendorName;
 
 /**
  * Created by BALE on 18/07/2016.
@@ -104,6 +110,8 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
     String usedBy;
     TextView usedByText;
     Button addToMyVendors;
+
+    private Tracker mTracker;
 
     public DialogSearchedVendorProfile(){
 
@@ -173,6 +181,8 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
         usedByText = (TextView)view.findViewById(R.id.usedByText);
         addToMyVendors = (Button)view.findViewById(R.id.addToMyVendors);
         vendorId = "";
+
+
 
         userId = getArguments().getString("userId");
         //vendorType = getArguments().getString("vendorType");
@@ -436,6 +446,19 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
             }
         });
 
+        // [START shared_tracker]
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+
+        Log.i("TAG", "User Main Screen: " + "SAMPLE");
+        mTracker.setScreenName("Tradesman Dialog");
+        mTracker.send(new HitBuilders.ScreenViewBuilder()
+                .setNewSession()
+                .build());
+        // [END shared_tracker]
+
+
         return builder.create();
     }
 
@@ -682,7 +705,15 @@ public class DialogSearchedVendorProfile extends DialogFragment  implements  Dia
                                 new getSmartVendor(context).execute("");
                                 new getReviews(context).execute(vendorId);
                                 new getVendorImage(context).execute("");
+
+                                mTracker.send(new HitBuilders.EventBuilder()
+                                        .setCategory("Searched Tradesman")
+                                        .setAction("Tradesman Id - "+vendorId+" || Tradesman Name - " +values[0] + " || Vendor Location - "+
+                                                values[2])
+                                        .build());
                             }
+
+
                         }
                     });
                 }

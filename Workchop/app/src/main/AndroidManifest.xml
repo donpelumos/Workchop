@@ -27,7 +27,7 @@
         android:allowBackup="true"
         android:icon="@drawable/workchopphoneicon"
         android:label="@string/app_name"
-
+        android:name="tracking.AnalyticsApplication"
         android:theme="@style/WorkChopTheme" >
         <provider android:authorities="com.facebook.app.FacebookContentProvider1377143922498067"
             android:name="com.facebook.FacebookContentProvider"

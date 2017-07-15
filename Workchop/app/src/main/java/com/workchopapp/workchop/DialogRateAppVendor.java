@@ -65,8 +65,13 @@ public class DialogRateAppVendor extends DialogFragment {
         rateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new sendRating(getActivity().getApplicationContext()).execute(vendorId,String.valueOf(starsRated));
-                dismiss();
+                if(starsRated > 0) {
+                    new sendRating(getActivity().getApplicationContext()).execute(vendorId,String.valueOf(starsRated));
+                    dismiss();
+                }
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(),"No Rating Given",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         starsRated = 0;

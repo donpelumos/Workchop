@@ -60,6 +60,8 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -92,6 +94,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+
+import tracking.AnalyticsApplication;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -146,6 +150,8 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
     int freshSignIn =0;
     TextView chatNotifierCount;
 
+    private Tracker mTracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +163,18 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         gpsEnabled = isLocationServiceEnabled();
         chatNotifierCount = (TextView)findViewById(R.id.chatNotifierCount);
         searchedContactsOfContactCount = new ArrayList<>();
+
+        // [START shared_tracker]
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
+        Log.i("TAG", "User Main Screen: " + "SAMPLE");
+        mTracker.setScreenName("User Main Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder()
+                .setNewSession()
+                .build());
+        // [END shared_tracker]
 
         contactsName = new ArrayList<String>();contactsNumber = new ArrayList<String>();
         newContactsName = new ArrayList<String>();newContactsNumber = new ArrayList<String>();
@@ -286,8 +304,6 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         selectVendorTypeList.setVisibility(View.GONE);
 
         float density = getResources().getDisplayMetrics().density;
-
-
 
         selectVendorType.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -747,8 +763,10 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
         backupProgress.setMessage("This may take a few minutes");
         getContactsCount();
         if(freshSignIn == 0){
-            startPolling();
+            //startPolling();
         }
+
+
     }
 
     public void startPolling(){
@@ -2206,7 +2224,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     public void run() {
                         ////Toast.makeText(context,"DOWNLOADED VENDOR TYPES = "+workchopVendorList.toString(),Toast.LENGTH_SHORT).show();
                         setVendorTypes();
-                        startPolling();//START POLLING FOR MESSAGES
+                        //startPolling();//START POLLING FOR MESSAGES
                     }
                 });
 
@@ -2898,13 +2916,29 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     public void run() {
                         ////Toast.makeText(context,"Existing contacts-"+params[1]+" and database contacts-"+sb.toString(),
                                 //Toast.LENGTH_SHORT).show();
-                        if(Integer.parseInt(params[1]) < Integer.parseInt(sb.toString())){
-                            ////Toast.makeText(context,"NO NEED FOR REFRESH",Toast.LENGTH_SHORT).show();
+                        if(Integer.parseInt(params[1]) > Integer.parseInt(sb.toString())){
+                            int contactsSizeOnPhone = Integer.parseInt(params[1]);
+                            int contactsSizeonServer = Integer.parseInt(sb.toString());
+                            Log.v("Contacts_size","ONLINE - "+ String.valueOf(contactsSizeonServer)+" AND ON PHONE - "+
+                            String.valueOf(contactsSizeOnPhone) +"(FRESH SIGNIN STATUS - "+String.valueOf(freshSignIn));
+                            if(((contactsSizeonServer*100)/contactsSizeOnPhone ) >= 80 && freshSignIn == 0){
+                                ////Toast.makeText(context,"NEED FOR REFRESH",Toast.LENGTH_SHORT).show();
+                                int p = ((Integer.parseInt(sb.toString())*100)/Integer.parseInt(params[1]) );
+                                Log.v("PERCENTAGE_USE",String.valueOf(p)+"% of phone contacts is online");
+                                startPolling();
+                            }
+                            else{
+                                int p = ((Integer.parseInt(sb.toString())*100)/Integer.parseInt(params[1]) );
+                                Log.v("PERCENTAGE_USE",String.valueOf(p)+"% of phone contacts is online");
+                                backupProgress.show();
+                                readContacts2();
+                            }
                         }
-                        else if((Integer.parseInt(params[1])-Integer.parseInt(sb.toString())) > 35 && freshSignIn == 0){
-                            ////Toast.makeText(context,"NEED FOR REFRESH",Toast.LENGTH_SHORT).show();
-                            backupProgress.show();
-                            readContacts2();
+                        else if(Integer.parseInt(params[1]) < Integer.parseInt(sb.toString())){
+                            startPolling();
+                        }
+                        else {
+                            startPolling();
                         }
                     }
                 });
@@ -3022,13 +3056,13 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             new contactsUploader2(ActivityMain.this).execute(userId,contactName,contactNumber,
                     String.valueOf(finalContactsList2.size() - i),String.valueOf(i));
         }
-        uploadUserVendors2();
+        //uploadUserVendors2();
 
         //Toast.makeText(ActivityMain.this,"USER CONTACTS FULLY UPLOADED", Toast.LENGTH_LONG).show();
     }
 
     public ArrayList<String> mergeSameFoundVendors(ArrayList<String> list){
-        list.add("zzzzzzzzzz");
+        //list.add("zzzzzzzzzz");
         ArrayList<String> newResult = new ArrayList<>();
         Object [] results = list.toArray();
         String [] result = new String[results.length];
@@ -3057,17 +3091,22 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 }
             }
             if(first.equals(second)){
+                //IF CURRENT IS EQUAL TO NEXT, ADD CURRENT BUT WE WON'T ADD NEXT SINCE IT WILL BE EQUAL TO PREVIOUS
                 newResult.add(first + firstNumber + "----" + secondNumber);
             }
             else if(!first.equals(previous)){
+                //IF CURRENT IS EQUAL TO PREVIOUS, DON'T ADD IT SINCE IT HAS BEEN ADDED
                 newResult.add(first + firstNumber);
             }
+            Log.v("MERGE_SIZE","Size of foundVendors2 - " + String.valueOf(newResult.size()));
+
         }
         return newResult;
     }
 
     public void uploadUserVendors2(){
         foundVendors2 = mergeSameFoundVendors(foundVendors2);
+
         for(int i=0; i < foundVendors2.size(); i++){
             String [] value = foundVendors2.get(i).split(" ");
             Log.v("INSIDE SORTING VENDORS "+i, foundVendors2.get(i));
@@ -3133,6 +3172,11 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                     int percent = (int)(double)((curr*100)/finalContactsList2.size());
                     backupProgress.setTitle("Backing up");
                     backupProgress.setMessage("Backing up contacts - "+ percent+"%");
+
+                    if(Integer.parseInt(params[4]) + 1 == finalContactsList2.size()){
+                        uploadUserVendors2();
+						Toast.makeText(ActivityMain.this,"Saving Tradesmen from device", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
             URL url = null;
@@ -3213,7 +3257,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
 
         @Override
         protected String doInBackground(final String... params) {
-            String dataUrl = "http://workchopapp.com/mobile_app/``endors.php";
+            String dataUrl = "http://workchopapp.com/mobile_app/upload_user_vendors.php";
             String dataUrl2 = "http://workchopapp.com/mobile_app/update_user_location.php";
             String dataUrlParameters = null;
             String dataUrlParameters2 = null;
@@ -3221,6 +3265,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                 public void run() {
                     if(Integer.parseInt(params[6])+1 == foundVendors2.size()) {
                         backupProgress.dismiss();
+                        startPolling();
                     }
                     else{
                         int curr = Integer.parseInt(params[6]) + 1;
@@ -3228,6 +3273,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
                         int percent = (int)(double)((curr*100)/foundVendors2.size());
                         backupProgress.setMessage("Backing up tradesmen - "+ percent+"%");
                         backupProgress.setTitle("Backing Up");
+
                     }
                 }
             });
@@ -3266,7 +3312,7 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
 
                 url = new URL(dataUrl2+"?"+dataUrlParameters2);
                 Log.v("REFRESH VENDORS UPLOAD", dataUrl+"?"+dataUrlParameters);
-                //Log.v("NEW URL =========", dataUrl2+"?"+dataUrlParameters2);
+                Log.v("NEW URL =========", dataUrl2+"?"+dataUrlParameters2);
                 HttpClient client2 = new DefaultHttpClient();
                 HttpGet request2 = new HttpGet();
                 request2.setURI(new URI(dataUrl2+"?"+dataUrlParameters2));
@@ -3444,6 +3490,20 @@ public class ActivityMain extends AppCompatActivity implements DialogLocationSel
             @Override
             public void run() {
                 //searcher(comboIndex);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Full Search")
+                        .setAction("Tradesman Type - "+String.valueOf(comboIndex)+" || Tradesman Location - "+ String.valueOf(selectedQuadrant))
+                        .build());
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Searched Location")
+                        .setAction("Tradesman Location - "+ String.valueOf(selectedQuadrant))
+                        .build());
+                String [] tradesmenTypes = {"","Gas Supplier","Hair Stylist","Make-Up Artist","Mechanic","Tailor"};
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Searched Tradesman Type")
+                        .setAction("Tradesman Type - "+tradesmenTypes[comboIndex])
+                        .build());
+
                 new searchEngine(ActivityMain.this).execute(userId,String.valueOf(comboIndex),
                         String.valueOf(selectedQuadrant));
                 //progressdialog.dismiss();
